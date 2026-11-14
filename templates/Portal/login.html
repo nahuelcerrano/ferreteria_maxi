@@ -3,40 +3,29 @@
 {% block titulo %}Ferretería Maxi | Ingresar{% endblock titulo %}
 {% block contenido %}
 
-<section
-  class="img-fluid pt-5"
-  style="
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .30) 15%, rgba(0, 0, 0, 0.30) 25%), url('{% static 'img/fondo.jpg' %}');
-    height: 90vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    text-shadow: 1px 2px 3px black;
-    color: white;
-  ">
+<section class="relative isolate flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden px-4 py-16">
+  <img src="{% static 'img/fondo.jpg' %}" alt="" class="absolute inset-0 -z-10 size-full object-cover">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-stone-950/85 via-stone-900/70 to-marca-900/60"></div>
 
-  {% if form.non_field_errors %}
-  <div class="text-md-center">
-    {% for error in form.non_field_errors %}<h2>{{ error }}</h2>{% endfor %}
-  </div>
-  {% endif %}
+  <div class="grid w-full max-w-5xl items-center gap-12 lg:grid-cols-2">
+    <div class="hidden text-white lg:block">
+      <p class="badge bg-marca-200/90 text-stone-900">Portal de preventistas</p>
+      <h1 class="mt-4 font-display text-7xl leading-none tracking-wide text-white">Ferretería <span class="text-marca-300">Maxi</span></h1>
+      <p class="mt-4 max-w-md text-lg text-stone-200">Más de 9.000 artículos de ferretería, sanitarios y gas para armar tus pedidos mayoristas.</p>
+    </div>
 
-  <div class="loginContainer mx-auto my-5 p-3">
-    <div class="text-md-center"><h1 class="tituloBienvenidos">Bienvenidos a Ferretería Maxi</h1></div>
-    <div class="contenedorContacto form-container">
-      <form class="col-5 text-center" id="formulario_login" action="{% url 'login' %}" method="post">
+    <div class="tarjeta mx-auto w-full max-w-md p-8 sm:p-10">
+      <h2 class="titulo-display text-4xl">Bienvenido</h2>
+      <p class="mt-1 text-sm text-stone-500">Ingresá con tu usuario para ver el catálogo.</p>
+
+      <form class="mt-8" action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
-        <label class="row lead" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-        <p class="row">{{ form.username }}</p>
-        <label class="row lead" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-        <p class="row">{{ form.password }}</p>
-        <button class="btn btn-primary m-4" type="submit">Ingresar</button>
+        {% include 'includes/formulario.html' with form=form %}
+        <button class="btn btn-oscuro mt-8 w-full py-3" type="submit">Ingresar</button>
       </form>
     </div>
   </div>
-
 </section>
 
 {% endblock contenido %}

@@ -1,59 +1,78 @@
 {% load static %}
-<header>
-  <nav class="navbar navbar-expand-lg" style="background-color: #f8e89f;">
-    <div class="container-fluid">
+{% with ruta=request.resolver_match.url_name %}
+<header class="sticky top-0 z-40 border-b border-marca-300/60 bg-marca-200/95 backdrop-blur">
+  <nav class="contenedor flex h-16 items-center gap-4" aria-label="Principal">
 
-      <a class="navbar-brand logo" href="{% if user.is_authenticated %}{% url 'inicio' %}{% else %}{% url 'login' %}{% endif %}">
-        <img src="{% static 'img/logoAmarilloChico.png' %}" width="270" height="65" alt="Ferretería Maxi">
-      </a>
+    <a href="{% if user.is_authenticated %}{% url 'inicio' %}{% else %}{% url 'login' %}{% endif %}" class="shrink-0">
+      <img src="{% static 'img/logoAmarilloChico.png' %}" alt="Ferretería Maxi" class="h-11 w-auto">
+    </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Mostrar navegación">
-        <span class="navbar-toggler-icon"></span>
+    {% if user.is_authenticated %}
+    <form action="{% url 'portalSearch' %}" method="get" role="search" class="relative hidden max-w-md min-w-56 flex-1 md:block">
+      <svg class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-stone-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.45 4.39l3.08 3.08a.75.75 0 1 1-1.06 1.06l-3.08-3.08A7 7 0 0 1 2 9Z" clip-rule="evenodd"/></svg>
+      <input type="search" name="keyword" value="{{ keyword|default:'' }}" required placeholder="Buscar por código, descripción, línea o rubro…" aria-label="Buscar productos"
+             class="input rounded-full border-transparent bg-white/80 pl-9 focus:bg-white">
+    </form>
+    {% endif %}
+
+    <div class="ml-auto hidden items-center gap-1 xl:flex">
+      {% if user.is_authenticated %}
+      <a href="{% url 'lineas' %}" class="nav-enlace {% if ruta == 'lineas' or ruta == 'seleccion' or ruta == 'gondola' %}nav-enlace-activo{% endif %}">Productos</a>
+      <a href="{% url 'servicios' %}" class="nav-enlace {% if ruta == 'servicios' %}nav-enlace-activo{% endif %}">Servicios</a>
+      {% endif %}
+      <a href="{% url 'about' %}" class="nav-enlace {% if ruta == 'about' %}nav-enlace-activo{% endif %}">Nosotros</a>
+      <a href="{% url 'contacto' %}" class="nav-enlace {% if ruta == 'contacto' %}nav-enlace-activo{% endif %}">Contacto</a>
+      {% if user.is_staff %}
+      <a href="{% url 'abm' %}" class="nav-enlace">Panel</a>
+      {% endif %}
+    </div>
+
+    <div class="ml-auto flex items-center gap-2 xl:ml-2">
+      {% if user.is_authenticated %}
+      <button type="button" data-abrir-dialogo="carrito" class="relative rounded-full p-2 text-stone-800 transition hover:bg-marca-300/70" aria-label="Ver carro de pedidos">
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.39c.51 0 .96.34 1.09.84l.38 1.44m0 0L6.75 12h10.5l2.25-6.72H5.11ZM7.5 16.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM6.75 12l-.75 3h12.75"/></svg>
+        <span data-contador-carrito class="absolute -top-0.5 -right-0.5 hidden min-w-5 rounded-full bg-stone-900 px-1.5 text-center text-xs leading-5 font-semibold text-white"></span>
       </button>
 
-      {% if user.is_authenticated %}
-      <a class="navbar-brand mx-3" href="#" aria-label="Ver carrito">
-        <i class="bi bi-cart-fill" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="btnModalBoot"></i>
-      </a>
-      <form class="d-flex" role="search" action="{% url 'portalSearch' %}" method="get">
-        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="keyword" value="{{ keyword|default:'' }}" required>
-        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Buscar</button>
-      </form>
+      <details class="relative">
+        <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full bg-white/70 py-1 pr-3 pl-1 text-sm font-medium text-stone-800 ring-1 ring-marca-300 transition hover:bg-white [&::-webkit-details-marker]:hidden">
+          <span class="grid size-7 place-items-center rounded-full bg-stone-900 text-xs font-bold text-marca-200 uppercase">{{ user.username|slice:":1" }}</span>
+          <span class="hidden sm:inline">{{ user.username }}</span>
+        </summary>
+        <div class="absolute right-0 mt-2 w-48 rounded-xl bg-white p-1.5 shadow-lg ring-1 ring-stone-200">
+          {% if user.is_staff %}
+          <a href="{% url 'abm' %}" class="block rounded-lg px-3 py-2 text-sm text-stone-700 hover:bg-stone-100">Panel de administración</a>
+          {% endif %}
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="w-full rounded-lg px-3 py-2 text-left text-sm text-stone-700 hover:bg-stone-100">Cerrar sesión</button>
+          </form>
+        </div>
+      </details>
+      {% else %}
+      <a href="{% url 'login' %}" class="btn btn-oscuro">Ingresar</a>
       {% endif %}
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center align-items-center">
-          {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link active" href="{% url 'lineas' %}">Productos</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{% url 'servicios' %}">Servicios</a></li>
-          {% endif %}
-          <li class="nav-item"><a class="nav-link active" href="{% url 'about' %}">Sobre Nosotros</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{% url 'contacto' %}">Contacto</a></li>
-
-          {% if user.is_staff %}
-          <li class="nav-item"><a class="nav-link active" href="{% url 'abm' %}">Panel de Administrador</a></li>
-          {% endif %}
-
-          {% if user.is_authenticated %}
-          <li class="dropdown ps-5">
-            <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ user.username }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <form method="post" action="{% url 'logout' %}">
-                  {% csrf_token %}
-                  <button type="submit" class="dropdown-item">Cerrar sesión</button>
-                </form>
-              </li>
-            </ul>
-          </li>
-          {% else %}
-          <li class="nav-item"><a class="btn btn-outline-success mx-3" href="{% url 'login' %}">Ingresar</a></li>
-          {% endif %}
-        </ul>
-      </div>
-
+      <button type="button" data-menu-boton class="rounded-lg p-2 text-stone-800 hover:bg-marca-300/70 xl:hidden" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+      </button>
     </div>
   </nav>
+
+  <!-- Menú en celulares -->
+  <div id="menu-movil" data-menu class="hidden border-t border-marca-300/60 xl:hidden">
+    <div class="contenedor space-y-1 py-3">
+      {% if user.is_authenticated %}
+      <form action="{% url 'portalSearch' %}" method="get" role="search" class="pb-2 md:hidden">
+        <input type="search" name="keyword" value="{{ keyword|default:'' }}" required placeholder="Buscar productos…" aria-label="Buscar productos" class="input">
+      </form>
+      <a href="{% url 'lineas' %}" class="nav-enlace block">Productos</a>
+      <a href="{% url 'servicios' %}" class="nav-enlace block">Servicios</a>
+      {% endif %}
+      <a href="{% url 'about' %}" class="nav-enlace block">Nosotros</a>
+      <a href="{% url 'contacto' %}" class="nav-enlace block">Contacto</a>
+      {% if user.is_staff %}<a href="{% url 'abm' %}" class="nav-enlace block">Panel de administración</a>{% endif %}
+    </div>
+  </div>
 </header>
+{% endwith %}

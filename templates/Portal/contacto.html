@@ -1,29 +1,36 @@
 {% extends 'Portal/base.html' %}
-{% load static %}
 {% block titulo %}Ferretería Maxi | Contacto{% endblock titulo %}
 {% block contenido %}
 
-<section
-  class="img-fluid pt-5"
-  style="
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .10) 15%, rgba(0, 0, 0, 0.10) 25%), url('{% static 'img/background_page.jpg' %}');
-    min-height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-  ">
-  <div class="contenedorContacto form-container">
-    <form class="col-6 text-center needs-validation text-black" id="formulario_contacto" action="{% url 'contacto' %}" method="post" novalidate>
+<section class="contenedor grid gap-12 py-16 lg:grid-cols-5 lg:py-24">
+  <div class="lg:col-span-2">
+    <p class="text-sm font-semibold tracking-wider text-marca-600 uppercase">Contacto</p>
+    <h1 class="titulo-pagina mt-1">Escribinos</h1>
+    <p class="mt-4 text-stone-600">¿Tenés una consulta sobre un producto, un pedido o querés ser preventista? Dejanos tu mensaje y te respondemos a la brevedad.</p>
+
+    <dl class="mt-10 space-y-6 text-sm">
+      <div>
+        <dt class="font-semibold text-stone-900">Teléfono</dt>
+        <dd class="mt-1 text-stone-600">4212-2733 / 4115-8422</dd>
+      </div>
+      <div>
+        <dt class="font-semibold text-stone-900">WhatsApp</dt>
+        <dd class="mt-1 text-stone-600">11-4344-3600</dd>
+      </div>
+      <div>
+        <dt class="font-semibold text-stone-900">Sede central</dt>
+        <dd class="mt-1 text-stone-600">Av. Ferrocarril Provincial 4200, San Francisco Solano, Quilmes</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="tarjeta p-8 sm:p-10 lg:col-span-3">
+    <form id="formulario_contacto" action="{% url 'contacto' %}" method="post">
       {% csrf_token %}
-      {{ formulario_contacto }}
-      <button class="btn btn-primary m-4" type="submit">Enviar consulta</button>
+      {% include 'includes/formulario.html' with form=formulario_contacto %}
+      <button class="btn btn-oscuro mt-8 w-full py-3 sm:w-auto sm:px-8" type="submit">Enviar consulta</button>
     </form>
   </div>
 </section>
 
 {% endblock contenido %}
-
-{% block javascript %}
-<script src="{% static 'js/scriptForm.js' %}"></script>
-{% endblock javascript %}

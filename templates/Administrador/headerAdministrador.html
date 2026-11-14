@@ -1,29 +1,37 @@
 {% load static %}
-<header>
-  <nav class="navbar navbar-expand-lg" style="background-color: #f8e89f;">
-    <div class="container-fluid">
-
-      <a class="navbar-brand mr-4 logo fs-3" href="{% url 'inicio' %}">
-        <img src="{% static 'img/logoAmarilloChico.png' %}" width="270" height="65" alt="Ferretería Maxi">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false" aria-label="Mostrar navegación">
-        <span class="navbar-toggler-icon"></span>
+{% with ruta=request.resolver_match.url_name %}
+<header class="sticky top-0 z-40 bg-stone-900 text-stone-300 shadow">
+  <div class="contenedor flex h-16 items-center gap-6">
+    <a href="{% url 'abm' %}" class="flex shrink-0 items-center gap-3">
+      <span class="grid size-9 place-items-center rounded-lg bg-marca-300 font-display text-xl text-stone-900">FM</span>
+      <span class="hidden font-display text-2xl tracking-wide text-white sm:block">Panel de administración</span>
+    </a>
+    <div class="ml-auto flex items-center gap-2">
+      <a href="{% url 'inicio' %}" class="rounded-lg px-3 py-2 text-sm hover:bg-stone-800 hover:text-white">Ver sitio</a>
+      <a href="{% url 'admin:index' %}" class="rounded-lg px-3 py-2 text-sm hover:bg-stone-800 hover:text-white">Admin Django</a>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="rounded-lg px-3 py-2 text-sm hover:bg-stone-800 hover:text-white">Salir</button>
+      </form>
+      <button type="button" data-menu-boton class="rounded-lg p-2 hover:bg-stone-800 lg:hidden" aria-expanded="false" aria-controls="menu-admin" aria-label="Abrir menú">
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
       </button>
+    </div>
+  </div>
 
-      <a href="{% url 'abm' %}" class="nav-link"><p class="bi-cursor logoPanel">Panel de Administración</p></a>
-
-      <div class="collapse navbar-collapse" id="navbarAdmin">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 mx-2">
-          <li class="nav-item mx-2"><a class="nav-link active border border-primary border-2 rounded" href="{% url 'ProductoCreateView' %}">Alta productos</a></li>
-          <li class="nav-item mx-2"><a class="nav-link active border border-primary border-2 rounded" href="{% url 'search' %}">Editar/Borrar producto</a></li>
-          <li class="nav-item mx-2"><a class="nav-link active border border-success border-2 rounded" href="{% url 'ServicioCreateView' %}">Alta servicios</a></li>
-          <li class="nav-item mx-2"><a class="nav-link active border border-success border-2 rounded" href="{% url 'servicioSearch' %}">Editar/Borrar servicio</a></li>
-          <li class="nav-item mx-2"><a class="nav-link active border border-secondary border-2 rounded" href="{% url 'clienteCreateView' %}">Alta clientes</a></li>
-          <li class="nav-item mx-2"><a class="nav-link active border border-secondary border-2 rounded" href="{% url 'clienteSearch' %}">Editar/Borrar cliente</a></li>
-          <li class="nav-item mx-2"><a class="nav-link active border border-dark border-2 rounded" href="{% url 'admin:index' %}">Admin Django</a></li>
-        </ul>
-      </div>
-
+  <nav id="menu-admin" data-menu class="hidden border-t border-stone-800 lg:block" aria-label="Secciones del panel">
+    <div class="contenedor flex flex-col gap-1 py-2 lg:flex-row lg:items-center lg:gap-6">
+      <span class="text-xs font-semibold tracking-wider text-stone-500 uppercase">Productos</span>
+      <a href="{% url 'ProductosView' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'ProductosView' %}text-marca-300{% endif %}">Listado</a>
+      <a href="{% url 'ProductoCreateView' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'ProductoCreateView' %}text-marca-300{% endif %}">Alta</a>
+      <a href="{% url 'search' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'search' %}text-marca-300{% endif %}">Buscar / editar</a>
+      <span class="mt-2 text-xs font-semibold tracking-wider text-stone-500 uppercase lg:mt-0 lg:ml-4">Servicios</span>
+      <a href="{% url 'ServicioCreateView' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'ServicioCreateView' %}text-marca-300{% endif %}">Alta</a>
+      <a href="{% url 'servicioSearch' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'servicioSearch' %}text-marca-300{% endif %}">Buscar / editar</a>
+      <span class="mt-2 text-xs font-semibold tracking-wider text-stone-500 uppercase lg:mt-0 lg:ml-4">Clientes</span>
+      <a href="{% url 'clienteCreateView' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'clienteCreateView' %}text-marca-300{% endif %}">Alta</a>
+      <a href="{% url 'clienteSearch' %}" class="rounded-md px-2 py-1.5 text-sm whitespace-nowrap hover:text-white {% if ruta == 'clienteSearch' %}text-marca-300{% endif %}">Buscar / editar</a>
     </div>
   </nav>
 </header>
+{% endwith %}

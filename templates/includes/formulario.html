@@ -1,0 +1,20 @@
+{% comment %}
+Renderiza los campos de un formulario de Django con los estilos del sitio.
+Uso: {% include 'includes/formulario.html' with form=mi_formulario %}
+{% endcomment %}
+{% if form.non_field_errors %}
+<div class="mb-5 rounded-lg bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-200">
+  {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+</div>
+{% endif %}
+{% for campo in form.hidden_fields %}{{ campo }}{% endfor %}
+<div class="space-y-5">
+  {% for campo in form.visible_fields %}
+  <div>
+    <label for="{{ campo.id_for_label }}" class="label">{{ campo.label }}</label>
+    {{ campo }}
+    {% if campo.help_text %}<span class="helptext">{{ campo.help_text }}</span>{% endif %}
+    {{ campo.errors }}
+  </div>
+  {% endfor %}
+</div>

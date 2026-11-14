@@ -1,174 +1,87 @@
 {% extends 'Portal/base.html' %}
 {% load static %}
-{% block titulo %}Sobre nosotros{% endblock titulo %}
+{% block titulo %}Ferretería Maxi | Sobre nosotros{% endblock titulo %}
 {% block contenido %}
 
-<section
-  class="bg-image" 
-  style="background-image: url({% static 'img/background_page.jpg' %});">
+<!-- Historia -->
+<section class="contenedor grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
+  <div>
+    <p class="text-sm font-semibold tracking-wider text-marca-600 uppercase">Nuestra historia</p>
+    <h1 class="titulo-pagina mt-1">¿Quiénes somos?</h1>
+    <div class="mt-6 space-y-4 text-stone-600">
+      <p>Soy Maximiliano Moretti, fundador y dueño de <strong class="text-stone-900">Ferretería Maxi</strong>. Llevamos más de 10 años en el mercado ayudando a nuestros clientes a encontrar las herramientas y materiales para sus proyectos.</p>
+      <p>Empezamos como una pequeña ferretería de barrio en zona sur en los 90 y de a poco fuimos creciendo hasta tener hoy más de 5 sucursales en Buenos Aires.</p>
+      <p>En 2012, además de nuestra tienda física, abrimos la tienda online, desde la que distribuimos nuestros artículos a toda la Argentina.</p>
+      <p>Mientras estudiaba la Diplomatura de Ciencias Empresariales trabajaba en la ferretería, y eso hizo que mi pasión por este mundo creciera tanto que, al terminar la carrera, me incorporé al equipo hasta el día de hoy.</p>
+    </div>
+  </div>
+  <img src="{% static 'img/instalaciones.jpg' %}" alt="Nuestras instalaciones" class="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl ring-1 ring-stone-200">
+</section>
 
-  <section class="seccion1-articulo1 text-center py-3">
-    <article id="seccion2-articulo2">
-      <h1 class='py-3'>¿Quíenes somos?</h1>
-      <div class='m-5'>
-        <p>Soy Maximiliano Moretti, fundador y dueño de FERRETERIA MAXI. Mas de 10 años en el mercado satifaciendo a nuestros clientes a encontrar las herramientas y materiales para sus proyectos.</p>
-            
-        <p>Empezamos como una pequeña ferreteria de barrio en zona sur en los 90 de a poco fuimos creciendo hasta tener hoy en dia mas de 5 sucursales en Buenos Aires.</p>
-          
-        <p>En 2012, además de nuestra tienda física Ferretería Maxi, abrimos nuestra tienda online Ferreteria Maxi en la cual distribuimos nuestros artículos a toda Argentina.</p>
-          
-        <p>Mientras estudiaba la Diplomatura de Ciencias Empresariales en la Universidad, trabajaba en la ferretería y eso hizo que me pasión por este mundo aumentase de tal manera que, finalizando la carrera, me incorporé al equipo hasta el día de hoy.</p>
+<!-- Instalaciones y servicios -->
+<section class="bg-white py-16 lg:py-24">
+  <div class="contenedor grid items-center gap-12 lg:grid-cols-2">
+    <img src="{% static 'img/transporte.jpg' %}" alt="Transporte propio" class="order-last aspect-[4/3] w-full rounded-3xl object-cover shadow-xl ring-1 ring-stone-200 lg:order-first">
+    <div class="space-y-10">
+      <div>
+        <h2 class="titulo-display text-4xl">Nuestras instalaciones</h2>
+        <p class="mt-3 text-stone-600">Contamos con almacenes donde guardamos todos nuestros productos para la venta por mayor, con stock permanente de las líneas de ferretería, sanitarios y gas.</p>
       </div>
+      <div>
+        <h2 class="titulo-display text-4xl">Nuestros servicios</h2>
+        <p class="mt-3 text-stone-600">Asesoramiento técnico, armado de pedidos a medida para preventistas y envíos a todo el país con flota propia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sucursales -->
+<section class="contenedor py-16 lg:py-24">
+  <h2 class="titulo-pagina text-center">¿Dónde estamos?</h2>
+
+  <div class="mt-12 space-y-8">
+    <article class="tarjeta grid overflow-hidden lg:grid-cols-3">
+      <img src="{% static 'img/sede_central.jpg' %}" alt="Sede central" class="h-64 w-full object-cover lg:h-full">
+      <div class="p-8">
+        <h3 class="titulo-display text-3xl">Sede central</h3>
+        <dl class="mt-4 space-y-2 text-sm text-stone-600">
+          <div><dt class="sr-only">Dirección</dt><dd>Av. Ferrocarril Provincial N°4200, San Francisco Solano, Quilmes</dd></div>
+          <div><dt class="sr-only">Teléfono</dt><dd>Tel: 4212-2733 / 4115-8422 · WhatsApp: 11-4344-3600</dd></div>
+          <div><dt class="sr-only">Horario</dt><dd>Lunes a viernes: 8 a 12:30 y 15 a 18 h · Sábados: 8 a 13 h</dd></div>
+        </dl>
+      </div>
+      <iframe class="h-64 w-full lg:h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa sede central"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3276.989576830959!2d-58.3163768!3d-34.7810377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32c6646f3c115%3A0xe78c456a20191eae!2sAv.%20Ferrocarril%20Provincial%204200%2C%20B1881%20San%20Francisco%20Solano%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1687389104932!5m2!1ses-419!2sar"></iframe>
     </article>
-  </section>
-  
-  <section>
-    <div class="container my-5">
-      <div class="row justify-content-center">
-        
-        <div class="col-md-6">
-          <img src="{% static 'img/instalaciones.jpg' %}" class="img-fluid" alt="...">
-        </div>
-    
-        <div class="col-md-6">
-          <h3 class='py-3'>Nuestras instalaciones</h3>
-          <p>Contamos con almacenes donde albergamos todos nuestros productos para comprar por mayor.</p>  
-          <p>{% lorem 20 w random %}</p>
-        </div>
-    
-      </div>
-    </div>
-  </section>
-  
-  <section>
-    <div class="container my-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <h3 class='py-3'>Nuestros servicios</h3>
-          <p>{% lorem 25 w random %}</p>
-          <p>{% lorem 25 w random %}</p>
-        </div>
-        
-        <div class="col-md-6">
-          <img src="{% static 'img/transporte.jpg' %}" class="img-fluid" alt="...">
-        </div>
-      </div>
-    </div>
-  </section>
-  
-    
-    <section>
-      <h1 class='py-3 text-center'>¿Dónde estamos?</h1>
-      
-      <!--Container sucursal central-->
-      <div class="container py-5">
-        <div class="row gx-10 align-items-start">
-      
-          <div class="col-lg-4 col-md-12">
-            <img src="{% static 'img/sede_central.jpg' %}" class="img-fluid" alt="...">
-          </div>
-          
-          <div class="col-lg-4 col-md-6 text-center">
-              <h3 class='mb-5'>SEDE CENTRAL</h3>
-              
-              <p><span style="line-height: 20.8px;">Av. Ferrocarril Provincial N°4200 San Francisco Solano, Quilmes</span></p>
-            
-              <p>Tel: 4212-2733 / 4115-8422</p>
-              
-              <p>WhatsApp: 11-4344-3600</p>
-            
-              <p>Lunes a Viernes: 8-12:30 y 15-18 HS</p>
-            
-              <p>Sabados: 8-13 HS</p>
-          </div>
-      
-          <div class="col-lg-4 col-md-6">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3276.989576830959!2d-58.3163768!3d-34.7810377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32c6646f3c115%3A0xe78c456a20191eae!2sAv.%20Ferrocarril%20Provincial%204200%2C%20B1881%20San%20Francisco%20Solano%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1687389104932!5m2!1ses-419!2sar"
-              width="350"
-              height="300"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-        </div>
-      </div>
 
-      <!--Container sucursal Quilmes-->
-      <div class="container py-5">
-        <div class="row gx-10 align-items-start">
-      
-          <div class="col-lg-4 col-md-12">
-            <img src="{% static 'img/sucursal_quilmes.jpg' %}" class="img-fluid" alt="sucursal quilmes">
-          </div>
-          
-          <div class="col-lg-4 col-md-6 text-center">
-              <h3 class='mb-5'>SUCURSAL QUILMES OESTE</h3>
-              
-              <p><span style="line-height: 20.8px;">Av Mosconi N°3012, Quilmes Oeste, Buenos Aires</span></p>
-            
-              <p>Tel / WhatsApp: 11-4344-3600</p>
-            
-              <p>Lunes a Viernes: 8-12 y 15-19 HS</p>
-            
-              <p>Sabados: 8-13 HS</p>
-          </div>
-      
-          <div class="col-lg-4 col-md-6">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d708.1427251038232!2d-58.2883381924584!3d-34.75627833266338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32c2eededd255%3A0xf5dbac8997b5a5d5!2sAv.%20Gral.%20Mosconi%203012%2C%20Quilmes%20Oeste%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1687387525909!5m2!1ses-419!2sar"
-              width="350"
-              height="300"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-        </div>
+    <article class="tarjeta grid overflow-hidden lg:grid-cols-3">
+      <img src="{% static 'img/sucursal_quilmes.jpg' %}" alt="Sucursal Quilmes Oeste" class="h-64 w-full object-cover lg:h-full">
+      <div class="p-8">
+        <h3 class="titulo-display text-3xl">Sucursal Quilmes Oeste</h3>
+        <dl class="mt-4 space-y-2 text-sm text-stone-600">
+          <div><dt class="sr-only">Dirección</dt><dd>Av. Mosconi N°3012, Quilmes Oeste, Buenos Aires</dd></div>
+          <div><dt class="sr-only">Teléfono</dt><dd>Tel / WhatsApp: 11-4344-3600</dd></div>
+          <div><dt class="sr-only">Horario</dt><dd>Lunes a viernes: 8 a 12 y 15 a 19 h · Sábados: 8 a 13 h</dd></div>
+        </dl>
       </div>
+      <iframe class="h-64 w-full lg:h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa sucursal Quilmes Oeste"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d708.1427251038232!2d-58.2883381924584!3d-34.75627833266338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32c2eededd255%3A0xf5dbac8997b5a5d5!2sAv.%20Gral.%20Mosconi%203012%2C%20Quilmes%20Oeste%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1687387525909!5m2!1ses-419!2sar"></iframe>
+    </article>
 
-      <!--Container sucursal Ituzaingo-->
-      <div class="container py-5">
-        <div class="row gx-10 align-items-start">
-      
-          <div class="col-lg-4 col-md-12">
-            <img src="{% static 'img/sucursal_ituzaingo.jpg' %}" class="img-fluid" alt="sucursal ituzaingo">
-          </div>
-          
-          <div class="col-lg-4 col-md-6 text-center">
-              <h3 class='mb-5'>SUCURSAL ITUZAINGO</h3>
-              
-              <p><span style="line-height: 20.8px;">Av. Presidente Peron N°6924 colectora Sur de la Autopista del Oeste, Ituzaingo, Buenos Aires</span></p>
-              
-              <p>Tel: 4624-0556/ 4624-9856</p>
-              
-              <p>WhatsApp: 11-4344-3600</p>
-            
-              <p>Lunes a Viernes: 9-17 HS</p>
-            
-              <p>Sabados: 9-13 HS</p>
-          </div>
-      
-          <div class="col-lg-4 col-md-6">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d820.7114187435733!2d-58.661812000000005!3d-34.63334!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcbf395cbc01b5%3A0x168f2e492464a06!2sFerreteria%20Palermo!5e0!3m2!1ses-419!2sar!4v1687389016021!5m2!1ses-419!2sar"
-              width="350"
-              height="300"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-        </div>
+    <article class="tarjeta grid overflow-hidden lg:grid-cols-3">
+      <img src="{% static 'img/sucursal_ituzaingo.jpg' %}" alt="Sucursal Ituzaingó" class="h-64 w-full object-cover lg:h-full">
+      <div class="p-8">
+        <h3 class="titulo-display text-3xl">Sucursal Ituzaingó</h3>
+        <dl class="mt-4 space-y-2 text-sm text-stone-600">
+          <div><dt class="sr-only">Dirección</dt><dd>Av. Presidente Perón N°6924, colectora sur de la Autopista del Oeste, Ituzaingó</dd></div>
+          <div><dt class="sr-only">Teléfono</dt><dd>Tel: 4624-0556 / 4624-9856 · WhatsApp: 11-4344-3600</dd></div>
+          <div><dt class="sr-only">Horario</dt><dd>Lunes a viernes: 9 a 17 h · Sábados: 9 a 13 h</dd></div>
+        </dl>
       </div>
-
-    </section>
-
-
+      <iframe class="h-64 w-full lg:h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa sucursal Ituzaingó"
+        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d820.7114187435733!2d-58.661812000000005!3d-34.63334!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcbf395cbc01b5%3A0x168f2e492464a06!2sFerreteria%20Palermo!5e0!3m2!1ses-419!2sar!4v1687389016021!5m2!1ses-419!2sar"></iframe>
+    </article>
+  </div>
 </section>
 
 {% endblock contenido %}

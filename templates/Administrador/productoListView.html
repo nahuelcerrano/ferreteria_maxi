@@ -2,7 +2,13 @@
 {% block titulo %}Ferretería Maxi | Productos{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="text-center my-4">Productos ({{ paginator.count }})</h1>
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="titulo-pagina">Productos</h1>
+    <p class="mt-1 text-stone-500">{{ paginator.count }} productos en total</p>
+  </div>
+  <a href="{% url 'ProductoCreateView' %}" class="btn btn-primario">Nuevo producto</a>
+</div>
 {% include 'Administrador/_tablaProductos.html' with productos=object_list acciones=True %}
 {% include 'includes/paginacion.html' %}
 

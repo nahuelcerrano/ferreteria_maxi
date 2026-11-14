@@ -1,17 +1,15 @@
 {% comment %}
-Paginador reutilizable. Espera ``page_obj`` en el contexto y conserva el resto
-de los parámetros GET (por ejemplo ``keyword``).
+Paginador reutilizable. Espera ``page_obj`` en el contexto y conserva el
+parámetro ``keyword`` de las búsquedas.
 {% endcomment %}
 {% if page_obj and page_obj.has_other_pages %}
-<nav aria-label="Paginación" class="my-4">
-  <ul class="pagination justify-content-center">
-    {% if page_obj.has_previous %}
-    <li class="page-item"><a class="page-link" href="?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">&laquo; Anterior</a></li>
-    {% endif %}
-    <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
-    {% if page_obj.has_next %}
-    <li class="page-item"><a class="page-link" href="?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Siguiente &raquo;</a></li>
-    {% endif %}
-  </ul>
+<nav aria-label="Paginación" class="mt-10 flex items-center justify-between border-t border-stone-200 pt-6">
+  {% if page_obj.has_previous %}
+  <a class="btn btn-secundario" href="?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">&larr; Anterior</a>
+  {% else %}<span></span>{% endif %}
+  <span class="text-sm text-stone-500">Página <strong class="text-stone-800">{{ page_obj.number }}</strong> de {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+  <a class="btn btn-secundario" href="?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Siguiente &rarr;</a>
+  {% else %}<span></span>{% endif %}
 </nav>
 {% endif %}

@@ -1,12 +1,14 @@
 {% extends 'Administrador/AdministradorBase.html' %}
-{% block titulo %}Ferretería Maxi | Buscar cliente{% endblock titulo %}
+{% block titulo %}Ferretería Maxi | Buscar clientes{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="AdministradorCreateTitle">Buscar cliente</h1>
-<div class="row justify-content-center my-5">
-  <form class="col-md-6 text-center" action="{% url 'clienteSearch' %}" method="get">
-    {{ busqueda.as_div }}
-    <button class="btn btn-primary m-4" type="submit">Buscar</button>
+<div class="mx-auto max-w-2xl">
+  <h1 class="titulo-pagina">Buscar clientes</h1>
+  <form action="{% url 'clienteSearch' %}" method="get" class="tarjeta mt-6 p-6 sm:p-8">
+    {% include 'includes/formulario.html' with form=busqueda %}
+    <div class="mt-6 flex justify-end">
+      <button class="btn btn-oscuro" type="submit">Buscar</button>
+    </div>
   </form>
 </div>
 

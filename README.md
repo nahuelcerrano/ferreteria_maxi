@@ -22,9 +22,10 @@ Comisión 23320 · Grupo 2 — [Juan Alberto Mazzocchi](https://github.com/JuanM
 8. [Rutas del sitio](#rutas-del-sitio)
 9. [API REST](#api-rest)
 10. [Usuarios y permisos](#usuarios-y-permisos)
-11. [Tests](#tests)
-12. [Puesta en producción](#puesta-en-producción)
-13. [Problemas frecuentes](#problemas-frecuentes)
+11. [Estilos (Tailwind CSS)](#estilos-tailwind-css)
+12. [Tests](#tests)
+13. [Puesta en producción](#puesta-en-producción)
+14. [Problemas frecuentes](#problemas-frecuentes)
 
 ---
 
@@ -38,7 +39,8 @@ Comisión 23320 · Grupo 2 — [Juan Alberto Mazzocchi](https://github.com/JuanM
 | [django-environ](https://django-environ.readthedocs.io/) | configuración por variables de entorno |
 | [WhiteNoise](https://whitenoise.readthedocs.io/) | archivos estáticos en producción |
 | Base de datos | SQLite (por defecto) o MySQL / PostgreSQL |
-| Front-end | Bootstrap 5, SweetAlert2, JavaScript (carrito en `localStorage`) |
+| Estilos | [Tailwind CSS v4](https://tailwindcss.com/) (compilado con su CLI; requiere Node solo para editar estilos) |
+| Front-end | JavaScript sin dependencias (carrito en `localStorage`, diálogos `<dialog>` nativos) |
 
 ## Inicio rápido
 
@@ -189,11 +191,14 @@ python -c "from django.core.management.utils import get_random_secret_key as g; 
 ├── templates/                  # Plantillas HTML
 │   ├── Portal/                 #   sitio público y catálogo
 │   ├── Administrador/          #   panel ABM
-│   └── includes/               #   mensajes y paginación reutilizables
+│   └── includes/               #   head, formularios, mensajes y paginación reutilizables
+├── assets/css/app.css          # FUENTE de los estilos (Tailwind): tema y componentes
 ├── static/
+│   ├── css/app.css             #   CSS compilado (generado, no editar a mano)
 │   ├── img/                    #   imágenes de productos (nombre = columna "imagen" del CSV)
-│   ├── js/script.js            #   carrito de pedidos (localStorage)
-│   └── js/scriptForm.js        #   validación del formulario de contacto
+│   ├── js/carrito.js           #   carrito de pedidos (localStorage)
+│   └── js/ui.js                #   menú móvil, diálogos y avisos
+├── package.json                # scripts para compilar Tailwind (npm run build:css)
 ├── LISTPROVconPipecorregido.csv  # listado de productos del proveedor
 ├── requirements.txt            # dependencias
 ├── requirements-mysql.txt      # dependencias extra para MySQL
@@ -252,6 +257,43 @@ Base: `/api/`. Requiere estar autenticado (sesión o login en `/api/auth/login/`
 - **Administrador**: usuario con `is_staff=True`. Además accede al panel `/abm/`
   y puede escribir en la API. Con `createsuperuser` se crea uno con todos los permisos.
 
+## Estilos (Tailwind CSS)
+
+El sitio usa **Tailwind CSS v4**. El CSS ya compilado está versionado en
+`static/css/app.css`, así que **para correr el sitio no hace falta Node**.
+Node (18 o superior) solo se necesita para **modificar estilos**.
+
+```bash
+npm install          # una sola vez
+npm run watch:css    # recompila automáticamente mientras editás plantillas
+npm run build:css    # compilación final (minificada) antes de commitear
+```
+
+- La fuente es [`assets/css/app.css`](assets/css/app.css): ahí están los colores
+  de la marca (`marca-50` … `marca-900`), las tipografías (Bebas Neue para títulos,
+  Inter para texto) y los componentes reutilizables.
+- Tailwind busca clases en `templates/`, `static/js/` y en los `.py` de `Portal`
+  y `Administrador` (los formularios usan la clase `input`). Si agregás clases en
+  otro lugar, sumalo con `@source` en ese archivo.
+- **Siempre corré `npm run build:css` y commiteá `static/css/app.css`** después de
+  cambiar plantillas, o las clases nuevas no van a tener estilo.
+
+Componentes disponibles (definidos con `@apply` en `assets/css/app.css`):
+
+| Clase | Uso |
+|---|---|
+| `contenedor` | Ancho máximo y márgenes laterales de página |
+| `titulo-pagina`, `titulo-display` | Títulos con la tipografía de la marca |
+| `btn` + `btn-primario` / `btn-oscuro` / `btn-secundario` / `btn-peligro` / `btn-fantasma` (`btn-sm`) | Botones |
+| `input`, `input-cantidad`, `label` | Campos de formulario |
+| `tarjeta`, `tarjeta-enlace group` | Tarjetas (la segunda, clickeable con efecto hover) |
+| `tabla` | Tablas del panel |
+| `badge` | Etiquetas chicas (unidad de venta, etc.) |
+| `dialogo` | Ventanas modales con `<dialog>` |
+
+Para formularios de Django usá el parcial que ya aplica los estilos:
+`{% include 'includes/formulario.html' with form=mi_form %}`.
+
 ## Tests
 
 ```bash
@@ -280,6 +322,7 @@ el control de acceso del panel ABM y los permisos de la API.
 | `UnicodeDecodeError` al importar | El CSV tiene otra codificación: `--encoding utf-8`. |
 | `mysqlclient` no instala | Faltan las librerías de desarrollo de MySQL (ver "Usar MySQL") o usar SQLite. |
 | El panel ABM da 403 | El usuario no es staff: marcar "Es staff" desde `/admin/`. |
+| Una clase de Tailwind nueva no tiene efecto | Falta recompilar: `npm run build:css`. |
 
 ## Historial de cambios importantes
 

@@ -3,35 +3,34 @@ from django import forms
 from Portal.models import Cliente, Producto, Servicio
 
 
-class _BootstrapMixin:
-    """Agrega la clase ``form-control`` de Bootstrap a todos los campos."""
+class _EstiloMixin:
+    """Agrega la clase ``input`` (definida en assets/css/app.css) a todos los campos."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for campo in self.fields.values():
-            clase = "form-select" if isinstance(campo.widget, forms.Select) else "form-control"
-            campo.widget.attrs.setdefault("class", clase)
+            campo.widget.attrs.setdefault("class", "input")
 
 
-class ProductoForm(_BootstrapMixin, forms.ModelForm):
+class ProductoForm(_EstiloMixin, forms.ModelForm):
     class Meta:
         model = Producto
         fields = ["cod_producto", "descripcion", "linea", "rubro", "pcio_lista", "unidad", "imagen"]
 
 
-class ServicioForm(_BootstrapMixin, forms.ModelForm):
+class ServicioForm(_EstiloMixin, forms.ModelForm):
     class Meta:
         model = Servicio
         fields = ["descripcion", "linea", "pcio_lista"]
 
 
-class ClienteForm(_BootstrapMixin, forms.ModelForm):
+class ClienteForm(_EstiloMixin, forms.ModelForm):
     class Meta:
         model = Cliente
         fields = ["nombre", "apellido", "email"]
 
 
-class _BusquedaForm(_BootstrapMixin, forms.Form):
+class _BusquedaForm(_EstiloMixin, forms.Form):
     keyword = forms.CharField(max_length=150)
 
 
