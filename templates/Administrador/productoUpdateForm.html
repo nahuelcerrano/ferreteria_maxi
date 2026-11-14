@@ -1,17 +1,17 @@
 {% extends 'Administrador/AdministradorBase.html' %}
-{% block titulo %}Ferreteria Maxi | Editar producto{% endblock titulo %}
-
+{% block titulo %}Ferretería Maxi | Editar producto{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="text-center" >Editar Producto</h1>
-<div class="contenedorContacto form-container my-5" >
-    
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update">
-    </form>
+<h1 class="AdministradorCreateTitle">Editar producto</h1>
+<div class="row justify-content-center">
+  <form method="post" class="col-md-6">
+    {% csrf_token %}
+    {{ form.as_div }}
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary m-4">Guardar cambios</button>
+      <a href="{% url 'abm' %}" class="btn btn-danger m-4">Cancelar</a>
+    </div>
+  </form>
 </div>
-
 
 {% endblock contenido %}

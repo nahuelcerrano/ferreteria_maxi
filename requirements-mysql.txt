@@ -1,0 +1,5 @@
+# Opcional: solo si se usa MySQL / MariaDB como base de datos.
+# Requiere las librerías de desarrollo del cliente de MySQL instaladas en el sistema
+# (ver README, sección "Usar MySQL").
+-r requirements.txt
+mysqlclient>=2.2

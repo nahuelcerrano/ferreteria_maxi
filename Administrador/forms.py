@@ -1,21 +1,57 @@
 from django import forms
 
-from Portal.models import Producto
+from Portal.models import Cliente, Producto, Servicio
 
 
-class ProductoForm(forms.ModelForm):
+class _BootstrapMixin:
+    """Agrega la clase ``form-control`` de Bootstrap a todos los campos."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for campo in self.fields.values():
+            clase = "form-select" if isinstance(campo.widget, forms.Select) else "form-control"
+            campo.widget.attrs.setdefault("class", clase)
+
+
+class ProductoForm(_BootstrapMixin, forms.ModelForm):
     class Meta:
-        model=Producto
-        fields='__all__'   #cambiar luego, poner los campos deseados solamente
-        
+        model = Producto
+        fields = ["cod_producto", "descripcion", "linea", "rubro", "pcio_lista", "unidad", "imagen"]
 
 
-class SearchForm(forms.Form):
-    keyword=forms.CharField(max_length=150, label='Palabra/Codigo a buscar',widget=forms.TextInput(attrs={'placeholder':'codigo, descipcion, linea, rubro',"size": "100"}))
+class ServicioForm(_BootstrapMixin, forms.ModelForm):
+    class Meta:
+        model = Servicio
+        fields = ["descripcion", "linea", "pcio_lista"]
 
 
-class SearchServicioForm(forms.Form):
-            keyword=forms.CharField(max_length=150, label='Palabra a buscar',widget=forms.TextInput(attrs={'placeholder':' descipcion ',"size": "100"}))
+class ClienteForm(_BootstrapMixin, forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ["nombre", "apellido", "email"]
 
-class SearchClienteForm(forms.Form):
-            keyword=forms.CharField(max_length=150, label='Nombre o Apellido a buscar', widget=forms.TextInput(attrs={'placeholder':'nombre o apellido',"size": "100"}) )
+
+class _BusquedaForm(_BootstrapMixin, forms.Form):
+    keyword = forms.CharField(max_length=150)
+
+
+class SearchForm(_BusquedaForm):
+    keyword = forms.CharField(
+        max_length=150,
+        label="Palabra o código a buscar",
+        widget=forms.TextInput(attrs={"placeholder": "código, descripción, línea, rubro"}),
+    )
+
+
+class SearchServicioForm(_BusquedaForm):
+    keyword = forms.CharField(
+        max_length=150, label="Palabra a buscar", widget=forms.TextInput(attrs={"placeholder": "descripción"})
+    )
+
+
+class SearchClienteForm(_BusquedaForm):
+    keyword = forms.CharField(
+        max_length=150,
+        label="Nombre, apellido o email a buscar",
+        widget=forms.TextInput(attrs={"placeholder": "nombre, apellido o email"}),
+    )

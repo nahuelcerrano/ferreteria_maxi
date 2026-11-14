@@ -1,96 +1,55 @@
-import re
 from django import forms
-from django.forms import ValidationError
- 
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.validators import RegexValidator
 
-#Validaciones para el formulario
-def validate_name(value):
-  nombre_regex = r'^[a-zA-ZÀ-ÿ\s]{4,40}$'
-  if not re.match(nombre_regex, value):
-    raise ValidationError('El nombre ingresado es invalido')
+validar_nombre = RegexValidator(
+    r"^[a-zA-ZÀ-ÿ\s]{4,40}$",
+    "El nombre solo puede contener letras y espacios (entre 4 y 40 caracteres).",
+)
+validar_telefono = RegexValidator(r"^\d{10}$", "El teléfono debe contener exactamente 10 dígitos.")
 
-def validate_email(value):
-  email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
-  if not re.match(email_regex, value):
-    raise ValidationError('El email ingresado es invalido.')
-  
-def max_number_validation(value):
-  number = str(value)
-  if len(number) != 10:
-    raise ValidationError('El numero debe contener 10 digitos.')
+_clase_campo = "form-control col-12 my-2 text-center"
 
-#La clase formulario
+
 class FormularioContacto(forms.Form):
+    nombreContacto = forms.CharField(
+        label="Nombre",
+        max_length=40,
+        validators=[validar_nombre],
+        error_messages={"required": "Por favor completá el campo"},
+        widget=forms.TextInput(attrs={"class": _clase_campo, "placeholder": "Ingrese su nombre"}),
+    )
+    emailContacto = forms.EmailField(
+        label="Email",
+        max_length=254,
+        error_messages={"required": "Por favor completá el campo", "invalid": "El email ingresado es inválido."},
+        widget=forms.EmailInput(attrs={"class": _clase_campo, "placeholder": "Ingrese su mail"}),
+    )
+    telefonoContacto = forms.CharField(
+        label="Teléfono",
+        max_length=10,
+        validators=[validar_telefono],
+        widget=forms.TextInput(
+            attrs={"class": _clase_campo, "placeholder": "Ingrese su teléfono", "pattern": r"^[0-9]{10}$", "inputmode": "numeric"}
+        ),
+    )
+    mensajeContacto = forms.CharField(
+        label="Mensaje",
+        max_length=1000,
+        widget=forms.Textarea(attrs={"class": "form-control col-12 my-2", "placeholder": "Ingrese su mensaje acá..."}),
+    )
 
-  nombreContacto = forms.CharField(
-    label='Nombre', 
-    max_length=40,
-    validators=[validate_name],
-    required= True,
-    error_messages={
-      'required': 'Por favor completa el campo'
-    },
-    widget=forms.TextInput(
-      attrs={'class': 'form-control col-12 my-2 text-center',
-             'placeholder': 'Ingrese su nombre',
-             'pattern':'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$'}
-    )
-  )
-  
-  emailContacto = forms.EmailField(
-    label='Email', 
-    max_length=50,
-    validators=[validate_email],
-    required= True,
-    error_messages={
-      'required': 'Por favor completa el campo'
-    },
-    widget=forms.EmailInput(
-      attrs={'class': 'form-control col-12 my-2 text-center',
-             'placeholder': 'Ingrese su mail'}
-    )
-  )
 
-  telefonoContacto = forms.CharField(
-    label='Telefono', 
-    max_length=15,
-    validators=[max_number_validation],
-    required= True,
-    widget=forms.TextInput(
-      attrs={'class': 'form-control col-12 my-2 text-center',
-              'placeholder': 'Ingrese su telefono',
-              'pattern':'^[0-9]*$'}
-    )
-  )
+class LoginForm(AuthenticationForm):
+    """Formulario de login de Django con los estilos de Bootstrap del sitio."""
 
-  mensajeContacto = forms.CharField(
-    label='Mensaje', 
-    max_length=50,
-    required= True,
-    widget=forms.Textarea(
-      attrs={'class': 'form-control col-12 my-2',
-             'placeholder': 'Ingrese su mensaje aca...'}
-    )
-  )
-
-class LoginForm(forms.Form):
-      
-  username=forms.CharField(
-    max_length=50,
-    label='Nombre',
-    required= True,
-    widget=forms.TextInput(
-      attrs={'class': 'form-control my-2 text-center',
-             'placeholder': 'Ingrese su nombre'}
-    )
-  )
-
-  password=forms.CharField(
-    max_length=50,
-    label='Contraseña',
-    required= True,
-    widget=forms.PasswordInput(
-      attrs={'class': 'form-control my-2 text-center',
-             'placeholder': 'Ingrese su contraseña'}
-    )
-  )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].label = "Usuario"
+        self.fields["username"].widget.attrs.update(
+            {"class": "form-control my-2 text-center", "placeholder": "Ingrese su usuario"}
+        )
+        self.fields["password"].label = "Contraseña"
+        self.fields["password"].widget.attrs.update(
+            {"class": "form-control my-2 text-center", "placeholder": "Ingrese su contraseña"}
+        )

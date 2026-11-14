@@ -1,144 +1,181 @@
-from django.shortcuts import render
-from Portal.models import *
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.urls import reverse_lazy
-from .forms import SearchForm, SearchServicioForm, SearchClienteForm
+"""Panel de altas, bajas y modificaciones (ABM). Solo accesible para usuarios staff."""
+
+from functools import wraps
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-# Create your views here.
+from Portal.models import Cliente, Producto, Servicio
+
+from .forms import (
+    ClienteForm,
+    ProductoForm,
+    SearchClienteForm,
+    SearchForm,
+    SearchServicioForm,
+    ServicioForm,
+)
+
+RESULTADOS_POR_PAGINA = 50
+
+
+class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    """Exige un usuario autenticado con ``is_staff=True``."""
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+def staff_member_required(vista):
+    """Igual que StaffRequiredMixin, pero para vistas basadas en funciones."""
+
+    @login_required
+    @wraps(vista)
+    def envoltura(request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied
+        return vista(request, *args, **kwargs)
+
+    return envoltura
+
+
+class _ABMMixin(StaffRequiredMixin, SuccessMessageMixin):
+    success_url = reverse_lazy("abm")
+
+
+def _buscar(request, form_class, queryset_fn, template_form, template_resultados):
+    """Búsqueda genérica por GET: muestra el formulario o, si es válido, los resultados paginados."""
+    form = form_class(request.GET or None)
+    if form.is_valid():
+        resultados = queryset_fn(form.cleaned_data["keyword"])
+        pagina = Paginator(resultados, RESULTADOS_POR_PAGINA).get_page(request.GET.get("page"))
+        contexto = {"articulos": pagina, "page_obj": pagina, "keyword": form.cleaned_data["keyword"]}
+        return render(request, template_resultados, contexto)
+    return render(request, template_form, {"busqueda": form})
+
+
+@staff_member_required
 def abm(request):
-    return render(request,'Administrador/abm.html')
+    contexto = {
+        "total_productos": Producto.objects.count(),
+        "total_servicios": Servicio.objects.count(),
+        "total_clientes": Cliente.objects.count(),
+    }
+    return render(request, "Administrador/abm.html", contexto)
 
-class ProductoListView(ListView):
-    model = Producto                #no esta en funcionamiento
-    paginate_by=50
-    template_name='Administrador/productoListView.html'
-    
 
-class ProductoCreateView(SuccessMessageMixin, CreateView):
+# --- Productos ---------------------------------------------------------------
+
+
+class ProductoListView(StaffRequiredMixin, ListView):
     model = Producto
-    template_name ='Administrador/productoCreateView.html'
-    fields='__all__'
-    success_message='Producto creado satisfactoriamente'
-    success_url=reverse_lazy('abm')
-   
-class ProductoUpdateView(SuccessMessageMixin, UpdateView):
-    model=Producto
-    fields='__all__'
-    success_url=reverse_lazy('abm')
-    success_message='Producto editado Correctamente'
-    template_name='Administrador/productoUpdateForm.html'
-    
-    
-class ProductoEliminarView(DeleteView):
-    model=Producto
-    template_name='Administrador/productoEliminar.html'
-    success_message='Producto Eliminado satisfactoriamente'
-    success_url=reverse_lazy('abm')  
+    paginate_by = RESULTADOS_POR_PAGINA
+    template_name = "Administrador/productoListView.html"
 
 
+class ProductoCreateView(_ABMMixin, CreateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = "Administrador/productoCreateView.html"
+    success_message = "Producto creado correctamente"
 
+
+class ProductoUpdateView(_ABMMixin, UpdateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = "Administrador/productoUpdateForm.html"
+    success_message = "Producto editado correctamente"
+
+
+class ProductoEliminarView(_ABMMixin, DeleteView):
+    model = Producto
+    template_name = "Administrador/productoEliminar.html"
+    success_message = "Producto eliminado correctamente"
+
+
+@staff_member_required
 def search(request):
-    
-    if request.method == 'POST':
-        busqueda=SearchForm(request.POST)
-           
-        if busqueda.is_valid():
-            keyword=busqueda.cleaned_data['keyword']
-        
-            cod=Producto.objects.all().filter(cod_producto__contains=keyword)
-            linea=Producto.objects.all().filter(linea__icontains=keyword)
-            rubro=Producto.objects.all().filter(rubro__icontains=keyword)
-            desc=Producto.objects.all().filter(descripcion__icontains=keyword)
-            articulos=cod.union(linea,rubro,desc)
-            context ={'articulos':articulos }
-            return render(request,'Administrador/ResultadosSearch.html', context)
-    else:
-        busqueda=SearchForm()    
-    
-    return render(request,'Administrador/productoSearch.html', {'busqueda' : busqueda})
-        
-class ServicioCreateView(SuccessMessageMixin, CreateView):
+    return _buscar(
+        request,
+        SearchForm,
+        lambda kw: Producto.objects.buscar(kw),
+        "Administrador/productoSearch.html",
+        "Administrador/ResultadosSearch.html",
+    )
+
+
+# --- Servicios ---------------------------------------------------------------
+
+
+class ServicioCreateView(_ABMMixin, CreateView):
     model = Servicio
-    template_name ='Administrador/servicioCreateView.html'
-    fields='__all__'
-    success_message='Servicio creado satisfactoriamente'
-    success_url=reverse_lazy('abm') 
-        
+    form_class = ServicioForm
+    template_name = "Administrador/servicioCreateView.html"
+    success_message = "Servicio creado correctamente"
 
-class ServicioUpdateView(SuccessMessageMixin, UpdateView):
-    model=Servicio
-    fields='__all__'
-    success_url=reverse_lazy('abm')
-    success_message='Servicio editado Correctamente'
-    template_name='Administrador/servicioUpdateForm.html'
-    
-def servicioSearch(request):
-    
-    if request.method == 'POST':
-        busqueda=SearchServicioForm(request.POST)
-           
-        if busqueda.is_valid():
-            keyword=busqueda.cleaned_data['keyword']
-        
-             
-            desc=Servicio.objects.all().filter(descripcion__icontains=keyword)
-                     
-            context ={'articulos':desc }
-            return render(request,'Administrador/serviciosResultadosSearch.html', context)
-    else:
-        busqueda=SearchServicioForm()    
-    
-    return render(request,'Administrador/servicioSearch.html', {'busqueda' : busqueda})
 
-class ServicioEliminarView(SuccessMessageMixin, DeleteView):
-    model=Servicio
-    template_name='Administrador/servicioEliminar.html'
-    success_message='Servicio Eliminado satisfactoriamente'
-    success_url=reverse_lazy('abm')  
-    
-    
-class ClienteCreateView(SuccessMessageMixin, CreateView):
-    model=Cliente
-    template_name='Administrador/clienteCreateView.html'
-    fields='__all__'
-    success_message='Cliente creado correctamente'
-    success_url=reverse_lazy('abm')
-    
-def clienteSearch(request):
-    if request.method == 'POST':
-        busqueda=SearchClienteForm(request.POST)
-           
-        if busqueda.is_valid():
-            keyword=busqueda.cleaned_data['keyword']
-        
-             
-            nom=Cliente.objects.all().filter(nombre__icontains=keyword)
-            apell=Cliente.objects.all().filter(apellido__icontains=keyword)
-            resultados=nom.union(apell)
-            context ={'articulos':resultados }
-            return render(request,'Administrador/clienteResultadosSearch.html', context)
-    else:
-        busqueda=SearchServicioForm()    
-    
-    return render(request,'Administrador/clienteSearch.html', {'busqueda' : busqueda})
-    
-    
-class ClienteUpdateView(SuccessMessageMixin, UpdateView):
-    model=Cliente
-    fields='__all__'
-    success_url='abm'
-    success_message='Cliente editado correctamente'
-    template_name='Administrador/clienteUpdateForm.html'
-    
-class ClienteEliminarView(SuccessMessageMixin, DeleteView):
-    model=Cliente
-    template_name='Administrador/clienteEliminar.html'
-    success_message='Cliente Eliminado satisfactoriamente'
-    success_url=reverse_lazy('abm') 
-    
+class ServicioUpdateView(_ABMMixin, UpdateView):
+    model = Servicio
+    form_class = ServicioForm
+    template_name = "Administrador/servicioUpdateForm.html"
+    success_message = "Servicio editado correctamente"
 
-  
-    
+
+class ServicioEliminarView(_ABMMixin, DeleteView):
+    model = Servicio
+    template_name = "Administrador/servicioEliminar.html"
+    success_message = "Servicio eliminado correctamente"
+
+
+@staff_member_required
+def servicio_search(request):
+    return _buscar(
+        request,
+        SearchServicioForm,
+        lambda kw: Servicio.objects.select_related("linea").filter(descripcion__icontains=kw),
+        "Administrador/servicioSearch.html",
+        "Administrador/serviciosResultadosSearch.html",
+    )
+
+
+# --- Clientes ----------------------------------------------------------------
+
+
+class ClienteCreateView(_ABMMixin, CreateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = "Administrador/clienteCreateView.html"
+    success_message = "Cliente creado correctamente"
+
+
+class ClienteUpdateView(_ABMMixin, UpdateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = "Administrador/clienteUpdateForm.html"
+    success_message = "Cliente editado correctamente"
+
+
+class ClienteEliminarView(_ABMMixin, DeleteView):
+    model = Cliente
+    template_name = "Administrador/clienteEliminar.html"
+    success_message = "Cliente eliminado correctamente"
+
+
+@staff_member_required
+def cliente_search(request):
+    return _buscar(
+        request,
+        SearchClienteForm,
+        lambda kw: Cliente.objects.filter(
+            Q(nombre__icontains=kw) | Q(apellido__icontains=kw) | Q(email__icontains=kw)
+        ),
+        "Administrador/clienteSearch.html",
+        "Administrador/clienteResultadosSearch.html",
+    )

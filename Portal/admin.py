@@ -1,14 +1,36 @@
 from django.contrib import admin
-from Portal.models import Producto , Servicio , Linea_servicio , Cliente , Metodo_de_pago
 
-# Register your models here.
+from .models import Cliente, LineaServicio, MetodoDePago, Producto, Servicio
 
-admin.site.register(Producto)
-admin.site.register(Servicio)
-admin.site.register(Linea_servicio)
-admin.site.register(Cliente)
 
-@admin.register(Metodo_de_pago)     #DIFERENTE FORMA
-class Metodo_de_Pago_Admin(admin.ModelAdmin):  #PARA SOBREESCRIBIR COMO SE VA A VER EN EL ADMIN   
-    list_display=['tipo']
- 
+@admin.register(Producto)
+class ProductoAdmin(admin.ModelAdmin):
+    list_display = ["cod_producto", "descripcion", "linea", "rubro", "pcio_lista", "unidad"]
+    list_filter = ["linea"]
+    search_fields = ["cod_producto", "descripcion", "rubro"]
+    list_per_page = 50
+
+
+@admin.register(LineaServicio)
+class LineaServicioAdmin(admin.ModelAdmin):
+    search_fields = ["linea"]
+
+
+@admin.register(Servicio)
+class ServicioAdmin(admin.ModelAdmin):
+    list_display = ["descripcion", "linea", "pcio_lista"]
+    list_filter = ["linea"]
+    search_fields = ["descripcion"]
+    autocomplete_fields = ["linea"]
+
+
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ["apellido", "nombre", "email"]
+    search_fields = ["nombre", "apellido", "email"]
+
+
+@admin.register(MetodoDePago)
+class MetodoDePagoAdmin(admin.ModelAdmin):
+    list_display = ["tipo"]
+    filter_horizontal = ["clientes"]

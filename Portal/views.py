@@ -1,144 +1,95 @@
-from django.shortcuts import render, redirect
-from django.conf import settings
-from .forms import FormularioContacto
-from Portal.models import *
-from django.views.generic.list import ListView
-from Portal.forms import LoginForm
-from django.contrib.auth import authenticate, login, logout
+"""Vistas del portal para preventistas (catálogo, carrito, contacto)."""
+
+from django.contrib import messages
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.core.paginator import Paginator
+from django.db.models import Min, Q
+from django.http import Http404
+from django.shortcuts import redirect, render
+from django.templatetags.static import static
+from django.views.decorators.http import require_GET
+
+from .forms import FormularioContacto, LoginForm
+from .imagenes import ruta_imagen_producto
+from .models import Producto, Servicio
+
+RESULTADOS_POR_PAGINA = 50
+
+
+class LoginView(auth_views.LoginView):
+    template_name = "Portal/login.html"
+    authentication_form = LoginForm
+    redirect_authenticated_user = True
 
 
 @login_required
 def home(request):
-                       
-    return render(request, 'Portal/home.html')
+    return render(request, "Portal/home.html")
+
+
+def about(request):
+    return render(request, "Portal/about.html")
+
 
 def contacto(request):
-     
-    if request.method == 'POST':
-        formulario_contacto = FormularioContacto(request.POST)
-        
-        return redirect('loginView')
-                        
+    if request.method == "POST":
+        formulario = FormularioContacto(request.POST)
+        if formulario.is_valid():
+            # TODO: enviar la consulta por email (django.core.mail.send_mail) o guardarla.
+            messages.success(request, "¡Gracias! Recibimos tu consulta y te responderemos a la brevedad.")
+            return redirect("contacto")
     else:
-        
-        formulario_contacto = FormularioContacto()
+        formulario = FormularioContacto()
+    return render(request, "Portal/contacto.html", {"formulario_contacto": formulario})
 
-    context = {
-        'formulario_contacto': formulario_contacto,
-    }
-
-    return render(request, 'Portal/contacto.html', context)
 
 @login_required
 def lineas(request):
- 
-    lineas=Producto.objects.order_by().values_list('linea',flat=True).distinct()
-    context={'lineas':lineas}
-    # print(context)
-    
-    return render(request, 'Portal/mostrarLineas.html', context  )
+    nombres = Producto.objects.order_by("linea").values_list("linea", flat=True).distinct()
+    lineas = [{"nombre": n, "imagen_url": static(ruta_imagen_producto(n))} for n in nombres]
+    return render(request, "Portal/mostrarLineas.html", {"lineas": lineas})
 
-def about(request):
-    return render(request, 'Portal/about.html')
 
 @login_required
-def seleccion(request,linea):   
-           
-        rubro=Producto.objects.order_by().values_list('rubro', flat=True).distinct().filter(linea=linea)
-        # print(rubro)
-        imagenes=[]
-        listaDeRubros=[]
-        
-        for item in rubro:
-            # print(item)
-            listaDeRubros.append(item)
-            
-            imagen=Producto.objects.distinct().filter(rubro=item)[0]
-            # print(imagen.imagen)
-            imagenes.append(imagen.imagen)
-        
-        # print(imagenes)
-        diccionario=dict(zip(listaDeRubros,imagenes))
-        print(diccionario)
-        
-         
-        context={'rubros':rubro, 'diccionarios':diccionario}
-        return render(request,'Portal/mostrarRubros.html', context)
-    
-@login_required    
-def gondola(request,rubro):
-       
-    articulos=Producto.objects.all().filter(rubro=rubro)
-    context={'articulos':articulos}
-    # print(articulos)
-    return render(request,'Portal/mostrarArticulos.html' ,context )
+def seleccion(request, linea):
+    """Rubros de una línea, cada uno con la imagen de alguno de sus productos."""
+    filas = (
+        Producto.objects.filter(linea=linea)
+        .values("rubro")
+        .annotate(imagen=Min("imagen", filter=~Q(imagen="")))
+        .order_by("rubro")
+    )
+    if not filas:
+        raise Http404("Línea inexistente")
+    rubros = [
+        {"nombre": f["rubro"], "imagen_url": static(ruta_imagen_producto(f["imagen"]))} for f in filas
+    ]
+    return render(request, "Portal/mostrarRubros.html", {"linea": linea, "rubros": rubros})
+
 
 @login_required
-def portalSearch(request):
-    
-   
-   
-    if request.method =='GET':
-        
-        keyword=request.GET.get('keyword')
-        cod=Producto.objects.all().filter(cod_producto__contains=keyword)
-        linea=Producto.objects.all().filter(linea__icontains=keyword)
-        rubro=Producto.objects.all().filter(rubro__icontains=keyword)
-        desc=Producto.objects.all().filter(descripcion__icontains=keyword)
-        articulos=cod.union(linea,rubro,desc)
-        context ={'articulos':articulos }
-        # print(articulos)
-        return render(request,'Portal\mostrarArticulos.html', context)
-    pass
+def gondola(request, rubro):
+    articulos = Producto.objects.filter(rubro=rubro).order_by("cod_producto")
+    return render(request, "Portal/mostrarArticulos.html", {"articulos": articulos, "titulo": rubro})
 
 
-def loginView(request):
-    
-    if request.user.is_authenticated:
-        # print('logueado')
-        return render(request, 'Portal/home.html' )
-    
-    if request.method == 'POST':
-            
-        username=request.POST['username']
-        password=request.POST['password']
-        # print(username)
-        user=authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request,user)
-            # print('autorizado')
-            return render(request, 'Portal/home.html' )
-        else:
-            formulario_login = LoginForm()
-
-            context = {
-                'formulario_login': formulario_login,
-                'messages':"Nombre o contraseña incorrectos"
-            }
-            return render(request, 'Portal/login.html',context)
-    else:
-        
-        formulario_login = LoginForm()
-
-    context = {
-        'formulario_login': formulario_login,
+@login_required
+@require_GET
+def portal_search(request):
+    keyword = request.GET.get("keyword", "").strip()
+    resultados = Producto.objects.buscar(keyword).order_by("linea", "rubro", "cod_producto")
+    pagina = Paginator(resultados, RESULTADOS_POR_PAGINA).get_page(request.GET.get("page"))
+    contexto = {
+        "articulos": pagina,
+        "page_obj": pagina,
+        "keyword": keyword,
+        "titulo": f"Resultados para «{keyword}»" if keyword else "Búsqueda",
     }
+    return render(request, "Portal/mostrarArticulos.html", contexto)
 
-    return render(request, 'Portal/login.html', context)
-    
-    
-def logoutView(request):
-    logout(request)  
-    return redirect('loginView')
 
-@login_required    
+@login_required
 def servicios(request):
-    servicios=Servicio.objects.all()
-    # print(servicios)
-    context={'servicios': servicios}
-    
-    return render (request, 'Portal/mostrarServicios.html',context)
-        
+    servicios = Servicio.objects.select_related("linea")
+    return render(request, "Portal/mostrarServicios.html", {"servicios": servicios})

@@ -1,0 +1,17 @@
+{% comment %}
+Paginador reutilizable. Espera ``page_obj`` en el contexto y conserva el resto
+de los parámetros GET (por ejemplo ``keyword``).
+{% endcomment %}
+{% if page_obj and page_obj.has_other_pages %}
+<nav aria-label="Paginación" class="my-4">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">&laquo; Anterior</a></li>
+    {% endif %}
+    <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Siguiente &raquo;</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

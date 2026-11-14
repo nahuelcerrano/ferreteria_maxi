@@ -429,30 +429,18 @@ function acomodadorDePedido(item){
     divPedido.innerHTML=itemPedido
     pedidoTotal.append(divPedido)
 };
+// Muestra la imagen ampliada de un producto. La URL ya viene resuelta por Django
+// en el atributo data-imagen (ver templates/Portal/mostrarArticulos.html).
 function modal(event){
-    console.log("first")
-    let id=event.currentTarget.getAttribute("id")
-    
-    let descripcion=event.currentTarget.getAttribute("name")
-     
-    let modal=document.getElementById("imagenModal2")
-     
-    modal.setAttribute("src", "/static/img/"+id+".jpg")
-    
-    let titulo=document.getElementById('exampleModalLongTitle')
-    
-    titulo.innerHTML=descripcion
-    let modalTodo=document.getElementById("modal2")
+    const origen = event.currentTarget;
+    document.getElementById("imagenModal2").setAttribute("src", origen.dataset.imagen);
+    document.getElementById("exampleModalLongTitle").textContent = origen.dataset.descripcion;
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("modal2")).show();
+};
 
-    
-    $('#modal2').modal('toggle')
-    
-  };
-
-  function closeModal(){
-     
-    $('#modal2').modal('toggle')
-  }
+function closeModal(){
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("modal2")).hide();
+};
 
 
 
