@@ -1,28 +1,29 @@
 {% extends 'Portal/base.html' %}
-{% block titulo %}Maxi Ferreteria | Lineas {% endblock titulo %}
+{% block titulo %}Ferretería Maxi | Líneas{% endblock titulo %}
 {% block contenido %}
 
-
-<section class=''>
-  
-  <div class='d-flex justify-content-center mt-2'>
-    <h1>Seleccione una linea</h1>
+<section>
+  <div class="d-flex justify-content-center mt-2">
+    <h1>Seleccione una línea</h1>
   </div>
 
-  <div class='cards_conteiner my-5'>
+  <div class="cards_conteiner my-5">
     {% for linea in lineas %}
     <div class="card_grid">
-      {% load static %}
       <div class="card_image img">
-        <img id="{{linea}}"src='{% static linea %}.jpg' alt="Card image cap">
+        <img src="{{ linea.imagen_url }}" alt="{{ linea.nombre }}" loading="lazy">
       </div>
       <div class="card_btn">
-        <a href='seleccion/{{linea}}' class='btn_hover bn18 text-dark text-decoration-none d-flex align-items-center justify-content-center'>{{linea}}</a>
+        <a href="{% url 'seleccion' linea.nombre %}" class="btn_hover bn18 text-dark text-decoration-none d-flex align-items-center justify-content-center">{{ linea.nombre }}</a>
       </div>
     </div>
-    {%endfor%}
+    {% empty %}
+    <div class="text-center">
+      <h2>Todavía no hay productos cargados.</h2>
+      <p>Un administrador debe ejecutar <code>python manage.py cargar_productos</code>.</p>
+    </div>
+    {% endfor %}
   </div>
 </section>
 
-
-{% endblock contenido  %}
+{% endblock contenido %}

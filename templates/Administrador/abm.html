@@ -1,16 +1,13 @@
- {% extends 'Administrador/AdministradorBase.html' %}
- {% block titulo %}Ferreteria Maxi | Panel Administrador{% endblock titulo %}
- {% block contenido %}
- {% if messages %}
-<ul class="messages">
-     {% for message in messages %}
-    <li> {{ message }} </li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% extends 'Administrador/AdministradorBase.html' %}
+{% block titulo %}Ferretería Maxi | Panel Administrador{% endblock titulo %}
+{% block contenido %}
 
-<div style="height: 550px;">
-    <h1 class="AdministradorCreateTitle">Bienvenido al Panel de Altas, Bajas y Modificaciones</h1>
+<h1 class="AdministradorCreateTitle">Bienvenido al Panel de Altas, Bajas y Modificaciones</h1>
+
+<div class="row text-center my-5 g-3">
+  <div class="col-md-4"><div class="card p-4"><h2>{{ total_productos }}</h2><p>Productos</p><a href="{% url 'ProductosView' %}">Ver listado</a></div></div>
+  <div class="col-md-4"><div class="card p-4"><h2>{{ total_servicios }}</h2><p>Servicios</p></div></div>
+  <div class="col-md-4"><div class="card p-4"><h2>{{ total_clientes }}</h2><p>Clientes</p></div></div>
 </div>
-    
+
 {% endblock contenido %}

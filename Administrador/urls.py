@@ -1,24 +1,23 @@
-from django.urls import path, re_path, include
+from django.urls import path
+
 from . import views
 
 urlpatterns = [
-path('abm',views.abm , name='abm'),
-path('productosView' , views.ProductoListView.as_view(), name='ProductosView'),
-path('productoCreateView',views.ProductoCreateView.as_view(), name='ProductoCreateView'),
-path('search',views.search, name='search'),
-path('productosEditar/<int:pk>', views.ProductoUpdateView.as_view(), name='productosEditar'),
-path('productosEliminar/<int:pk>', views.ProductoEliminarView.as_view(),name='productosEliminar'),
-
-path('servicioCreateView', views.ServicioCreateView.as_view(), name='ServicioCreateView'),
-path('servicioSearch', views.servicioSearch, name='servicioSearch'),
-path('servicioEditar/<int:pk>',views.ServicioUpdateView.as_view(), name='servicioEditar'),
-path('seervicioEliminar/<int:pk>', views.ServicioEliminarView.as_view(),name='servicioEliminar'),
-
-path('clienteCreateView', views.ClienteCreateView.as_view(), name='clienteCreateView'),
-path('clienteSearch',views.clienteSearch, name='clienteSearch'),
-path('clienteEditar/<int:pk>', views.ClienteUpdateView.as_view(), name='clienteEditar'),
-path('clienteEliminar/<int:pk>', views.ClienteEliminarView.as_view(), name='clienteEliminar'),
-
-
- 
+    path("abm/", views.abm, name="abm"),
+    # Productos
+    path("abm/productos/", views.ProductoListView.as_view(), name="ProductosView"),
+    path("abm/productos/nuevo/", views.ProductoCreateView.as_view(), name="ProductoCreateView"),
+    path("abm/productos/buscar/", views.search, name="search"),
+    path("abm/productos/<int:pk>/editar/", views.ProductoUpdateView.as_view(), name="productosEditar"),
+    path("abm/productos/<int:pk>/eliminar/", views.ProductoEliminarView.as_view(), name="productosEliminar"),
+    # Servicios
+    path("abm/servicios/nuevo/", views.ServicioCreateView.as_view(), name="ServicioCreateView"),
+    path("abm/servicios/buscar/", views.servicio_search, name="servicioSearch"),
+    path("abm/servicios/<int:pk>/editar/", views.ServicioUpdateView.as_view(), name="servicioEditar"),
+    path("abm/servicios/<int:pk>/eliminar/", views.ServicioEliminarView.as_view(), name="servicioEliminar"),
+    # Clientes
+    path("abm/clientes/nuevo/", views.ClienteCreateView.as_view(), name="clienteCreateView"),
+    path("abm/clientes/buscar/", views.cliente_search, name="clienteSearch"),
+    path("abm/clientes/<int:pk>/editar/", views.ClienteUpdateView.as_view(), name="clienteEditar"),
+    path("abm/clientes/<int:pk>/eliminar/", views.ClienteEliminarView.as_view(), name="clienteEliminar"),
 ]

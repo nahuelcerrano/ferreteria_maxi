@@ -1,4 +1,5 @@
 {% extends 'Portal/base.html' %}
+{% load static %}
 
 {% block titulo %}Ferreteria Maxi | Inicio{% endblock titulo %}
 
@@ -7,7 +8,6 @@
 <section>
    
  <div
-  {% load static%}
   class='img-fluid' 
   style='
     background-image: linear-gradient(to bottom,rgba(0, 0, 0, .30) 15%, rgba(0, 0, 0, .30) 25%), url({% static 'img/fondo.jpg' %});
@@ -21,12 +21,12 @@
   '>
 
   <div class='hero_text'>
-    <h1 class='text-center pb-5 fw-bold'>Ferreteria MAXI</h1>
+    <h1 class='text-center pb-5 fw-bold'>Ferretería MAXI</h1>
 
     <h2 class='text-center py-5'>La ferreteria donde podés encontrar el cosito que va en el coso</h2>
     <div class='d-flex justify-content-evenly py-4'>
-      <a  href="lineas" class="btn btn-dark">Nuestros Productos</a>
-      <a  href="servicios" class="btn btn-dark">Nuestros Servicios</a>
+      <a href="{% url 'lineas' %}" class="btn btn-dark">Nuestros Productos</a>
+      <a href="{% url 'servicios' %}" class="btn btn-dark">Nuestros Servicios</a>
     </div>
   </div>
 </div>
@@ -35,10 +35,9 @@
   <h1 class='text-center'>Que vendemos</h1>
   <div class='cards_conteiner my-5'>
 
-    {% load static %}
     <div class="card_grid card_grid_home">
       <div class="card_image img">
-        <img id="{{linea}}" src="{% static 'img/SANITARIOS.jpg' %}" alt="Card image cap">
+        <img src="{% static 'img/SANITARIOS.jpg' %}" alt="Card image cap">
       </div>
       <div class="card_text text-center">
         <h3>Sanitarios</h3>
@@ -47,7 +46,7 @@
 
     <div class="card_grid card_grid_home">
       <div class="card_image img">
-        <img id="{{linea}}" src="{% static 'img/ACCESORIOS SIGAS.jpg' %}" alt="Card image cap">
+        <img src="{% static 'img/ACCESORIOS SIGAS.jpg' %}" alt="Card image cap">
       </div>
       <div class="card_text text-center">
         <h3>Sigas</h3>
@@ -56,7 +55,7 @@
 
     <div class="card_grid card_grid_home">
       <div class="card_image img">
-        <img id="{{linea}}" src="{% static 'img/ACCESORIOS DE ZINC.jpg' %}" alt="Card image cap">
+        <img src="{% static 'img/ACCESORIOS DE ZINC.jpg' %}" alt="Card image cap">
       </div>
       <div class="card_text text-center">
         <h3>Accesorios de zinc</h3>
@@ -65,7 +64,7 @@
 
     <div class="card_grid card_grid_home">
       <div class="card_image img">
-        <img id="{{linea}}" src="{% static 'img/ACCESORIOS THERMOFUSION.jpg' %}" alt="Card image cap">
+        <img src="{% static 'img/ACCESORIOS THERMOFUSION.jpg' %}" alt="Card image cap">
       </div>
       <div class="card_text text-center">
         <h3>Thermofusion</h3>

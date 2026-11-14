@@ -128,3 +128,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Proyecto
+!.env.example
+staticfiles/
+static_root/
+.venv/

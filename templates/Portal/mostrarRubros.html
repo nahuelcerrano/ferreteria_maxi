@@ -1,29 +1,28 @@
 {% extends 'Portal/base.html' %}
-{% block titulo %}Maxi Ferreteria | Rubros {% endblock titulo %}
+{% block titulo %}Ferretería Maxi | {{ linea }}{% endblock titulo %}
 {% block contenido %}
 
 <section>
+  <div class="py-4 d-flex justify-content-evenly">
+    <a class="btn btn-secondary" href="{% url 'lineas' %}">Volver a líneas</a>
+  </div>
 
-    
-    <div class="d-flex justify-content-center">
-         <h1>Seleccione un Rubro</h1>
+  <div class="d-flex justify-content-center">
+    <h1>{{ linea }}: seleccione un rubro</h1>
+  </div>
+
+  <div class="cards_conteiner my-5 w-100">
+    {% for rubro in rubros %}
+    <div class="card_grid mw-100">
+      <div class="card_image img mw-100">
+        <img src="{{ rubro.imagen_url }}" alt="{{ rubro.nombre }}" class="w-100" loading="lazy">
+      </div>
+      <div class="card_btn">
+        <a href="{% url 'gondola' rubro.nombre %}" class="btn_hover bn18 text-dark text-decoration-none d-flex align-items-center justify-content-center btn-block">{{ rubro.nombre }}</a>
+      </div>
     </div>
-  <div class='cards_conteiner my-5  w-100'>
-        {% for key , value  in diccionarios.items %}
-        <div class="card_grid mw-100 ">
-          {% load static %}
-          <div class="card_image img mw-100 ">
-            <img id="{{value}}"src='/static/img/{{value}}.jpg' alt="Card image cap" class='w-100'>
-          </div>
-          <div class="card_btn ">
-            <a href='../gondola/{{key}}' class='btn_hover bn18 text-dark text-decoration-none d-flex align-items-center justify-content-center btn-block '>{{key}}</a>
-          </div>
-        </div>
-        {%endfor%}
+    {% endfor %}
   </div>
 </section>
 
-  
-
-
-{% endblock contenido  %}
+{% endblock contenido %}

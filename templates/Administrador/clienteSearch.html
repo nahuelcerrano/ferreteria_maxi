@@ -1,23 +1,13 @@
 {% extends 'Administrador/AdministradorBase.html' %}
-{% block titulo %}Ferreteria Maxi | Buscar Clientes{% endblock titulo %}
+{% block titulo %}Ferretería Maxi | Buscar cliente{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="AdministradorCreateTitle">Intoduzca el parametro a buscar</h1>
- 
-
-<div class="contenedorContacto form-container my-5" >
-
-    <form class='col-6 text-center ' id='busqueda' name='busqueda' action='{% url 'clienteSearch' %}' method='POST' novalidate>
-
-      {% csrf_token %}
-      {{ busqueda }}
-
-      <button class="btn btn-primary m-4" type="submit">Buscar</button>
-    
-    </form>
-
+<h1 class="AdministradorCreateTitle">Buscar cliente</h1>
+<div class="row justify-content-center my-5">
+  <form class="col-md-6 text-center" action="{% url 'clienteSearch' %}" method="get">
+    {{ busqueda.as_div }}
+    <button class="btn btn-primary m-4" type="submit">Buscar</button>
+  </form>
 </div>
-
-
 
 {% endblock contenido %}
