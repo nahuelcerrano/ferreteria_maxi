@@ -134,3 +134,6 @@ dmypy.json
 staticfiles/
 static_root/
 .venv/
+
+# Node (compilación de Tailwind)
+node_modules/

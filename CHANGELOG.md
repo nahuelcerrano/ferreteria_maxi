@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.1.0] — 2026-11-14 · Rediseño visual con Tailwind CSS
+
+### Cambiado
+- Bootstrap 5 → **Tailwind CSS v4**, compilado localmente con su CLI (`npm run build:css`).
+  El CSS generado (`static/css/app.css`) se versiona, así que el sitio no necesita Node.
+- Rediseño de todas las páginas con la misma estructura: paleta amarilla de la marca
+  sobre neutros cálidos, tipografías Bebas Neue + Inter, tarjetas, cabecera fija con
+  buscador, menú para celulares y diseño responsive.
+- Catálogo de productos en grilla de tarjetas con precio formateado (`$ 1.234,56`).
+- Panel de administración con barra propia, tarjetas de resumen y tablas.
+- Carrito reescrito (`static/js/carrito.js`): contador en la cabecera, cantidades editables,
+  quitar productos, total en pesos. Mantiene el formato de `localStorage`, así que
+  los carritos existentes siguen funcionando.
+
+### Eliminado
+- Bootstrap, jQuery, SweetAlert2 y Bootstrap Icons (reemplazados por `<dialog>` nativo,
+  JS propio y SVG en línea). Ya no se cargan scripts de CDNs.
+- `static/js/script.js`, `static/js/scriptForm.js` y las hojas de estilo viejas.
+
+### Corregido
+- El carrito armaba su HTML con `innerHTML` a partir de datos de `localStorage`; ahora
+  construye el DOM con `textContent` (evita inyección de HTML).
+
 ## [2.0.0] — 2026-11-14 · Refactor y puesta en marcha
 
 ### Corregido (la página no funcionaba)

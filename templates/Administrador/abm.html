@@ -1,13 +1,41 @@
 {% extends 'Administrador/AdministradorBase.html' %}
-{% block titulo %}Ferretería Maxi | Panel Administrador{% endblock titulo %}
+{% block titulo %}Ferretería Maxi | Panel de administración{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="AdministradorCreateTitle">Bienvenido al Panel de Altas, Bajas y Modificaciones</h1>
+<h1 class="titulo-pagina">Hola, {{ user.get_short_name|default:user.username }}</h1>
+<p class="mt-1 text-stone-500">Panel de altas, bajas y modificaciones.</p>
 
-<div class="row text-center my-5 g-3">
-  <div class="col-md-4"><div class="card p-4"><h2>{{ total_productos }}</h2><p>Productos</p><a href="{% url 'ProductosView' %}">Ver listado</a></div></div>
-  <div class="col-md-4"><div class="card p-4"><h2>{{ total_servicios }}</h2><p>Servicios</p></div></div>
-  <div class="col-md-4"><div class="card p-4"><h2>{{ total_clientes }}</h2><p>Clientes</p></div></div>
+<div class="mt-8 grid gap-5 md:grid-cols-3">
+  <div class="tarjeta p-6">
+    <p class="text-sm font-medium text-stone-500">Productos</p>
+    <p class="mt-2 text-4xl font-bold text-stone-900">{{ total_productos }}</p>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <a href="{% url 'ProductoCreateView' %}" class="btn btn-primario btn-sm">Nuevo</a>
+      <a href="{% url 'search' %}" class="btn btn-secundario btn-sm">Buscar</a>
+      <a href="{% url 'ProductosView' %}" class="btn btn-fantasma btn-sm">Ver listado</a>
+    </div>
+  </div>
+  <div class="tarjeta p-6">
+    <p class="text-sm font-medium text-stone-500">Servicios</p>
+    <p class="mt-2 text-4xl font-bold text-stone-900">{{ total_servicios }}</p>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <a href="{% url 'ServicioCreateView' %}" class="btn btn-primario btn-sm">Nuevo</a>
+      <a href="{% url 'servicioSearch' %}" class="btn btn-secundario btn-sm">Buscar</a>
+    </div>
+  </div>
+  <div class="tarjeta p-6">
+    <p class="text-sm font-medium text-stone-500">Clientes</p>
+    <p class="mt-2 text-4xl font-bold text-stone-900">{{ total_clientes }}</p>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <a href="{% url 'clienteCreateView' %}" class="btn btn-primario btn-sm">Nuevo</a>
+      <a href="{% url 'clienteSearch' %}" class="btn btn-secundario btn-sm">Buscar</a>
+    </div>
+  </div>
+</div>
+
+<div class="tarjeta mt-8 p-6 text-sm text-stone-600">
+  <p class="font-semibold text-stone-900">Actualizar el catálogo desde el CSV del proveedor</p>
+  <p class="mt-1">Desde la terminal del servidor: <code class="rounded bg-stone-100 px-1.5 py-0.5">python manage.py cargar_productos</code> (ver README).</p>
 </div>
 
 {% endblock contenido %}

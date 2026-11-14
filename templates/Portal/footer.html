@@ -1,7 +1,23 @@
-<footer class="page-footer font-small blue" style='background-color: #f8e89f;'>
-
-  <div class="footer-copyright text-center py-5 text-body">© {% now "Y" %}
-    <a class="navbar-brand mr-4 logo fs-3" href="{% url 'inicio' %}">Ferreteria Maxi</a>
+{% load static %}
+<footer class="mt-20 bg-stone-900 text-stone-400">
+  <div class="contenedor grid gap-10 py-12 sm:grid-cols-3">
+    <div>
+      <p class="font-display text-3xl tracking-wide text-marca-200">Ferretería Maxi</p>
+      <p class="mt-2 text-sm">Mayorista de ferretería, sanitarios y gas desde los 90.</p>
+    </div>
+    <div class="text-sm">
+      <p class="font-semibold text-stone-200">Sede central</p>
+      <p class="mt-2">Av. Ferrocarril Provincial 4200<br>San Francisco Solano, Quilmes</p>
+      <p class="mt-2">Tel: 4212-2733 · WhatsApp: 11-4344-3600</p>
+    </div>
+    <div class="text-sm">
+      <p class="font-semibold text-stone-200">Enlaces</p>
+      <ul class="mt-2 space-y-1.5">
+        <li><a href="{% url 'about' %}" class="hover:text-marca-200">Sobre nosotros</a></li>
+        <li><a href="{% url 'contacto' %}" class="hover:text-marca-200">Contacto</a></li>
+        {% if user.is_authenticated %}<li><a href="{% url 'lineas' %}" class="hover:text-marca-200">Catálogo</a></li>{% endif %}
+      </ul>
+    </div>
   </div>
-
+  <div class="border-t border-stone-800 py-5 text-center text-xs">© {% now "Y" %} Ferretería Maxi</div>
 </footer>

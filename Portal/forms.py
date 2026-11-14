@@ -8,7 +8,7 @@ validar_nombre = RegexValidator(
 )
 validar_telefono = RegexValidator(r"^\d{10}$", "El teléfono debe contener exactamente 10 dígitos.")
 
-_clase_campo = "form-control col-12 my-2 text-center"
+_clase_campo = "input"
 
 
 class FormularioContacto(forms.Form):
@@ -36,20 +36,20 @@ class FormularioContacto(forms.Form):
     mensajeContacto = forms.CharField(
         label="Mensaje",
         max_length=1000,
-        widget=forms.Textarea(attrs={"class": "form-control col-12 my-2", "placeholder": "Ingrese su mensaje acá..."}),
+        widget=forms.Textarea(attrs={"class": "input", "rows": 5, "placeholder": "Ingrese su mensaje acá..."}),
     )
 
 
 class LoginForm(AuthenticationForm):
-    """Formulario de login de Django con los estilos de Bootstrap del sitio."""
+    """Formulario de login de Django con los estilos del sitio."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].label = "Usuario"
         self.fields["username"].widget.attrs.update(
-            {"class": "form-control my-2 text-center", "placeholder": "Ingrese su usuario"}
+            {"class": "input", "placeholder": "Ingrese su usuario", "autofocus": True}
         )
         self.fields["password"].label = "Contraseña"
         self.fields["password"].widget.attrs.update(
-            {"class": "form-control my-2 text-center", "placeholder": "Ingrese su contraseña"}
+            {"class": "input", "placeholder": "Ingrese su contraseña"}
         )

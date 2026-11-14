@@ -2,25 +2,25 @@
 {% block titulo %}Ferretería Maxi | Líneas{% endblock titulo %}
 {% block contenido %}
 
-<section>
-  <div class="d-flex justify-content-center mt-2">
-    <h1>Seleccione una línea</h1>
-  </div>
+<section class="contenedor py-12">
+  <p class="text-sm font-semibold tracking-wider text-marca-600 uppercase">Catálogo</p>
+  <h1 class="titulo-pagina mt-1">Seleccione una línea</h1>
 
-  <div class="cards_conteiner my-5">
+  <div class="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
     {% for linea in lineas %}
-    <div class="card_grid">
-      <div class="card_image img">
-        <img src="{{ linea.imagen_url }}" alt="{{ linea.nombre }}" loading="lazy">
+    <a href="{% url 'seleccion' linea.nombre %}" class="tarjeta-enlace group">
+      <div class="aspect-square overflow-hidden bg-white p-4">
+        <img src="{{ linea.imagen_url }}" alt="" loading="lazy" class="size-full object-contain transition duration-300 group-hover:scale-105">
       </div>
-      <div class="card_btn">
-        <a href="{% url 'seleccion' linea.nombre %}" class="btn_hover bn18 text-dark text-decoration-none d-flex align-items-center justify-content-center">{{ linea.nombre }}</a>
+      <div class="flex items-center justify-between gap-2 border-t border-stone-100 bg-white px-4 py-3">
+        <span class="text-sm font-semibold text-stone-800">{{ linea.nombre }}</span>
+        <span class="text-marca-500 transition group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
       </div>
-    </div>
+    </a>
     {% empty %}
-    <div class="text-center">
-      <h2>Todavía no hay productos cargados.</h2>
-      <p>Un administrador debe ejecutar <code>python manage.py cargar_productos</code>.</p>
+    <div class="tarjeta col-span-full p-12 text-center">
+      <h2 class="text-lg font-semibold">Todavía no hay productos cargados</h2>
+      <p class="mt-2 text-sm text-stone-500">Un administrador debe ejecutar <code class="rounded bg-stone-100 px-1.5 py-0.5">python manage.py cargar_productos</code>.</p>
     </div>
     {% endfor %}
   </div>

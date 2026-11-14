@@ -2,21 +2,24 @@
 {% block titulo %}Ferretería Maxi | Resultados de la búsqueda{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="text-center my-4">Servicios que coinciden con «{{ keyword }}»</h1>
-<div class="table-responsive">
-  <table class="table table-striped align-middle text-center">
-    <thead><tr><th>Descripción</th><th>Línea</th><th>Precio</th><th colspan="2">Acciones</th></tr></thead>
+<h1 class="titulo-pagina">Servicios</h1>
+<p class="mt-1 text-stone-500">{{ page_obj.paginator.count }} resultado(s) para «{{ keyword }}»</p>
+<div class="tarjeta mt-6 overflow-x-auto">
+  <table class="tabla">
+    <thead><tr><th scope="col">Descripción</th><th scope="col">Línea</th><th scope="col" class="!text-right">Precio</th><th scope="col"><span class="sr-only">Acciones</span></th></tr></thead>
     <tbody>
       {% for servicio in articulos %}
       <tr>
-        <td class="text-start">{{ servicio.descripcion }}</td>
-        <td>{{ servicio.linea }}</td>
-        <td>${{ servicio.pcio_lista|floatformat:2 }}</td>
-        <td><a href="{% url 'servicioEditar' servicio.pk %}" class="btn btn-warning btn-sm">Editar</a></td>
-        <td><a href="{% url 'servicioEliminar' servicio.pk %}" class="btn btn-danger btn-sm">Eliminar</a></td>
+        <td class="font-medium text-stone-900">{{ servicio.descripcion }}</td>
+        <td class="text-stone-600">{{ servicio.linea }}</td>
+        <td class="text-right font-semibold">$ {{ servicio.pcio_lista|floatformat:"2g" }}</td>
+        <td class="text-right whitespace-nowrap">
+          <a href="{% url 'servicioEditar' servicio.pk %}" class="btn btn-secundario btn-sm">Editar</a>
+          <a href="{% url 'servicioEliminar' servicio.pk %}" class="btn btn-fantasma btn-sm text-red-600 hover:text-red-700">Eliminar</a>
+        </td>
       </tr>
       {% empty %}
-      <tr><td colspan="5">No se encontraron coincidencias.</td></tr>
+      <tr><td colspan="4" class="py-12 text-center text-stone-500">No se encontraron coincidencias.</td></tr>
       {% endfor %}
     </tbody>
   </table>

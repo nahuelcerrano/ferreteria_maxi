@@ -1,214 +1,98 @@
 {% extends 'Portal/base.html' %}
 {% load static %}
-
-{% block titulo %}Ferreteria Maxi | Inicio{% endblock titulo %}
-
+{% block titulo %}Ferretería Maxi | Inicio{% endblock titulo %}
 {% block contenido %}
 
-<section>
-   
- <div
-  class='img-fluid' 
-  style='
-    background-image: linear-gradient(to bottom,rgba(0, 0, 0, .30) 15%, rgba(0, 0, 0, .30) 25%), url({% static 'img/fondo.jpg' %});
-    height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    text-shadow: 1px 2px 3px black;
-    color: white;
-  '>
-
-  <div class='hero_text'>
-    <h1 class='text-center pb-5 fw-bold'>Ferretería MAXI</h1>
-
-    <h2 class='text-center py-5'>La ferreteria donde podés encontrar el cosito que va en el coso</h2>
-    <div class='d-flex justify-content-evenly py-4'>
-      <a href="{% url 'lineas' %}" class="btn btn-dark">Nuestros Productos</a>
-      <a href="{% url 'servicios' %}" class="btn btn-dark">Nuestros Servicios</a>
+<!-- Portada -->
+<section class="relative isolate overflow-hidden">
+  <img src="{% static 'img/fondo.jpg' %}" alt="" class="absolute inset-0 -z-10 size-full object-cover">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-stone-950/90 via-stone-900/70 to-stone-900/30"></div>
+  <div class="contenedor py-28 sm:py-36">
+    <p class="badge bg-marca-200 text-stone-900">Mayorista de ferretería</p>
+    <h1 class="mt-5 font-display text-6xl leading-none tracking-wide text-white sm:text-8xl">Ferretería <span class="text-marca-300">Maxi</span></h1>
+    <p class="mt-6 max-w-xl text-lg text-stone-200 sm:text-xl">La ferretería donde podés encontrar el cosito que va en el coso.</p>
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="{% url 'lineas' %}" class="btn btn-primario px-6 py-3 text-base">Nuestros productos</a>
+      <a href="{% url 'servicios' %}" class="btn bg-white/10 px-6 py-3 text-base text-white ring-1 ring-white/30 hover:bg-white/20">Nuestros servicios</a>
     </div>
   </div>
-</div>
+</section>
 
-<div class='my-5'>
-  <h1 class='text-center'>Que vendemos</h1>
-  <div class='cards_conteiner my-5'>
-
-    <div class="card_grid card_grid_home">
-      <div class="card_image img">
-        <img src="{% static 'img/SANITARIOS.jpg' %}" alt="Card image cap">
-      </div>
-      <div class="card_text text-center">
-        <h3>Sanitarios</h3>
-      </div>
+<!-- Qué vendemos -->
+<section class="contenedor py-20">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="text-sm font-semibold tracking-wider text-marca-600 uppercase">Catálogo</p>
+      <h2 class="titulo-pagina mt-1">Qué vendemos</h2>
     </div>
-
-    <div class="card_grid card_grid_home">
-      <div class="card_image img">
-        <img src="{% static 'img/ACCESORIOS SIGAS.jpg' %}" alt="Card image cap">
-      </div>
-      <div class="card_text text-center">
-        <h3>Sigas</h3>
-      </div>
-    </div>
-
-    <div class="card_grid card_grid_home">
-      <div class="card_image img">
-        <img src="{% static 'img/ACCESORIOS DE ZINC.jpg' %}" alt="Card image cap">
-      </div>
-      <div class="card_text text-center">
-        <h3>Accesorios de zinc</h3>
-      </div>
-    </div>
-
-    <div class="card_grid card_grid_home">
-      <div class="card_image img">
-        <img src="{% static 'img/ACCESORIOS THERMOFUSION.jpg' %}" alt="Card image cap">
-      </div>
-      <div class="card_text text-center">
-        <h3>Thermofusion</h3>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<hr class="border border-warning border-2 opacity-50">
-
-<div class='my-1'>
-  <h1 class='text-center'>Nuestros servicios</h1>
-
-
-  <div class="container d-flex justify-content-center my-5">
-
-    <div class="card_service m-1">
-      <div class="card_ico text-center" ><img src='{% static 'img/atencion.png' %}' alt="" width='50%'> </div>
-        <div class="inner_text text-center">
-            <h5 class='my-3 text-black'>Asistencia al cliente</h5>
-            <p>Nuestros personal capacitado los ayudara a encontrar la mejor solucion para cada tipo de problema</p>
-        </div>
-    </div>   
-    
-    <div class="card_service m-1">
-      <div class="card_ico text-center" ><img src='{% static 'img/instalacion.png' %}' alt="" width='50%'> </div> 
-      <div class="inner_text text-center">
-        <h5 class='my-3 text-black'>Instalaciones</h5>
-        <p>Modernas intalaciones certificadas en Gestión de Medio Ambiente ISO 14001 y Gestión de Calidad ISO 9001</p>
-      </div>
+    <a href="{% url 'lineas' %}" class="text-sm font-semibold text-stone-700 hover:text-stone-900">Ver todas las líneas &rarr;</a>
   </div>
 
-  <div class="card_service m-1">
-    <div class="card_ico text-center" ><img src='{% static 'img/envio.png' %}' alt="" width='50%'> </div> 
-      <div class="inner_text text-center">
-          <h5 class="my-3 text-black">Envios</h5>
-          <p>A todo el País en flota propia y al exterior</p>
-      </div>
+  <div class="mt-10 grid grid-cols-2 gap-5 lg:grid-cols-4">
+    <a href="{% url 'seleccion' 'SANITARIOS' %}" class="tarjeta-enlace group">
+      <div class="aspect-square overflow-hidden bg-white p-4"><img src="{% static 'img/SANITARIOS.jpg' %}" alt="" class="size-full object-contain transition duration-300 group-hover:scale-105"></div>
+      <p class="border-t border-stone-100 px-4 py-3 text-center font-semibold">Sanitarios</p>
+    </a>
+    <a href="{% url 'seleccion' 'ACCESORIOS SIGAS' %}" class="tarjeta-enlace group">
+      <div class="aspect-square overflow-hidden bg-white p-4"><img src="{% static 'img/ACCESORIOS SIGAS.jpg' %}" alt="" class="size-full object-contain transition duration-300 group-hover:scale-105"></div>
+      <p class="border-t border-stone-100 px-4 py-3 text-center font-semibold">Sigas</p>
+    </a>
+    <a href="{% url 'seleccion' 'ACCESORIOS DE ZINC' %}" class="tarjeta-enlace group">
+      <div class="aspect-square overflow-hidden bg-white p-4"><img src="{% static 'img/ACCESORIOS DE ZINC.jpg' %}" alt="" class="size-full object-contain transition duration-300 group-hover:scale-105"></div>
+      <p class="border-t border-stone-100 px-4 py-3 text-center font-semibold">Accesorios de zinc</p>
+    </a>
+    <a href="{% url 'seleccion' 'ACCESORIOS THERMOFUSION' %}" class="tarjeta-enlace group">
+      <div class="aspect-square overflow-hidden bg-white p-4"><img src="{% static 'img/ACCESORIOS THERMOFUSION.jpg' %}" alt="" class="size-full object-contain transition duration-300 group-hover:scale-105"></div>
+      <p class="border-t border-stone-100 px-4 py-3 text-center font-semibold">Thermofusión</p>
+    </a>
   </div>
-</div>
-</div>
+</section>
 
-<hr class="border border-warning border-2 opacity-50">
-
-<div class='my-1'>
-  <h1 class='text-center'>La opinion de nuestros clientes</h1>
-
-  <div class="text-center my-4">
-    <div class="d-flex justify-content-center">
-      <!-- Carousel wrapper -->
-      <div id="carouselExample" class="carousel slide carousel-dark" data-bs-ride="carousel">
-        <!-- Inner -->
-        <div class="carousel-inner">
-          <!-- Single item -->
-          <div class="carousel-item active">
-            <ul class="list-unstyled d-flex justify-content-center my-2">
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-half text-warning mx-1"></i>
-              </li>
-            </ul>
-            <p class="lead mx-4 mx-md-5">
-              "No puedo recomendar esta ferretería lo suficiente.
-              Tienen una amplia variedad de herramientas y equipos para cualquier proyecto industrial que necesite.
-              El personal es muy bien informado y siempre están dispuestos a ayudar a encontrar lo que se necesita.
-              Siempre me siento seguro sabiendo que puedo contar con ellos para mantener mi negocio funcionando sin problemas."
-            </p>
-            <p class="text-muted mb-0">- Elvio Lento</p>
-          </div>
-
-          <!-- Single item -->
-          <div class="carousel-item">
-            <ul class="list-unstyled d-flex justify-content-center my-2">
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-            </ul>
-            <p class="lead mx-4 mx-md-5">
-              "La atención al cliente es excepcional en esta ferretería.
-              Visito con frecuencia para comprar herramientas y suministros, y siempre me sorprende lo servicial que es el personal.
-              Me han ayudado a encontrar soluciones creativas a algunos problemas en mi negocio.
-              ¡Incluso me han llamado después de mis compras para asegurarse de que todo estaba funcionando bien!"
-            </p>
-            <p class="text-muted mb-0">- Vicente Levidente</p>
-          </div>
-
-          <!-- Single item -->
-          <div class="carousel-item">
-            <ul class="list-unstyled d-flex justify-content-center my-2">
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-fill text-warning mx-1"></i>
-              </li>
-              <li>
-                <i class="bi bi-star-half text-warning mx-1"></i>
-              </li>
-            </ul>
-            <p class="lead mx-4 mx-md-5">
-              "La mejor ferretería industrial que he visitado.
-              Tienen una enorme selección de productos a precios muy razonables.
-              Incluso cuando no tienen algo en stock, son muy buenos para conseguirlo rápidamente.
-              El personal siempre es muy amable y educado. ¡No puedo imaginar comprar de otros! ¡Altamente recomendado!"
-            </p>
-            <p class="text-muted mb-0">- Raimundo Lares</p>
-          </div>
-        </div>
-        <!-- Inner -->
+<!-- Servicios -->
+<section class="bg-white py-20">
+  <div class="contenedor">
+    <p class="text-center text-sm font-semibold tracking-wider text-marca-600 uppercase">Por qué elegirnos</p>
+    <h2 class="titulo-pagina mt-1 text-center">Nuestros servicios</h2>
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      <div class="rounded-2xl bg-stone-50 p-8 text-center ring-1 ring-stone-200">
+        <img src="{% static 'img/atencion.png' %}" alt="" class="mx-auto size-20 object-contain">
+        <h3 class="mt-6 text-lg font-semibold">Asistencia al cliente</h3>
+        <p class="mt-2 text-sm text-stone-600">Nuestro personal capacitado te ayuda a encontrar la mejor solución para cada tipo de problema.</p>
       </div>
-      <!-- Carousel wrapper -->
+      <div class="rounded-2xl bg-stone-50 p-8 text-center ring-1 ring-stone-200">
+        <img src="{% static 'img/instalacion.png' %}" alt="" class="mx-auto size-20 object-contain">
+        <h3 class="mt-6 text-lg font-semibold">Instalaciones</h3>
+        <p class="mt-2 text-sm text-stone-600">Modernas instalaciones certificadas en Gestión de Medio Ambiente ISO 14001 y Gestión de Calidad ISO 9001.</p>
+      </div>
+      <div class="rounded-2xl bg-stone-50 p-8 text-center ring-1 ring-stone-200">
+        <img src="{% static 'img/envio.png' %}" alt="" class="mx-auto size-20 object-contain">
+        <h3 class="mt-6 text-lg font-semibold">Envíos</h3>
+        <p class="mt-2 text-sm text-stone-600">A todo el país con flota propia y también al exterior.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- Opiniones -->
+<section class="contenedor py-20">
+  <h2 class="titulo-pagina text-center">La opinión de nuestros clientes</h2>
+  <div class="mt-12 grid gap-6 lg:grid-cols-3">
+    <figure class="tarjeta flex flex-col p-8">
+      <p class="text-marca-500" aria-label="4,5 de 5 estrellas">★★★★<span class="text-stone-300">★</span></p>
+      <blockquote class="mt-4 flex-1 text-stone-700">“No puedo recomendar esta ferretería lo suficiente. Tienen una amplia variedad de herramientas y equipos, y el personal siempre está dispuesto a ayudar.”</blockquote>
+      <figcaption class="mt-6 text-sm font-semibold text-stone-900">Elvio Lento</figcaption>
+    </figure>
+    <figure class="tarjeta flex flex-col p-8">
+      <p class="text-marca-500" aria-label="5 de 5 estrellas">★★★★★</p>
+      <blockquote class="mt-4 flex-1 text-stone-700">“La atención al cliente es excepcional. Me ayudaron a encontrar soluciones creativas para mi negocio. ¡Incluso me llamaron después de la compra para ver si todo funcionaba!”</blockquote>
+      <figcaption class="mt-6 text-sm font-semibold text-stone-900">Vicente Levidente</figcaption>
+    </figure>
+    <figure class="tarjeta flex flex-col p-8">
+      <p class="text-marca-500" aria-label="4,5 de 5 estrellas">★★★★<span class="text-stone-300">★</span></p>
+      <blockquote class="mt-4 flex-1 text-stone-700">“La mejor ferretería industrial que visité. Enorme selección a precios razonables, y cuando no tienen algo lo consiguen rápido.”</blockquote>
+      <figcaption class="mt-6 text-sm font-semibold text-stone-900">Raimundo Lares</figcaption>
+    </figure>
+  </div>
 </section>
 
 {% endblock contenido %}

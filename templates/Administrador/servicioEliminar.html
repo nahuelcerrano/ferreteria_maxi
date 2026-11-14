@@ -2,13 +2,14 @@
 {% block titulo %}Ferretería Maxi | Eliminar servicio{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="text-center">Eliminar servicio</h1>
-<div class="text-center my-5">
-  <form method="post">
+<div class="tarjeta mx-auto mt-6 max-w-lg p-8 text-center">
+  <div class="mx-auto grid size-12 place-items-center rounded-full bg-red-100 text-2xl text-red-600" aria-hidden="true">!</div>
+  <h1 class="mt-4 text-xl font-semibold">Eliminar servicio</h1>
+  <p class="mt-2 text-sm text-stone-600">¿Seguro que querés eliminar <strong class="text-stone-900">{{ object }}</strong>? Esta acción no se puede deshacer.</p>
+  <form method="post" class="mt-8 flex justify-center gap-3">
     {% csrf_token %}
-    <p>¿Seguro que querés eliminar <strong>{{ object }}</strong>? Esta acción no se puede deshacer.</p>
-    <button type="submit" class="btn btn-danger m-2">Confirmar</button>
-    <a href="{% url 'abm' %}" class="btn btn-secondary m-2">Cancelar</a>
+    <a href="{% url 'abm' %}" class="btn btn-secundario">Cancelar</a>
+    <button type="submit" class="btn btn-peligro">Sí, eliminar</button>
   </form>
 </div>
 

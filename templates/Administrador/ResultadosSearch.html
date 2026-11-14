@@ -2,7 +2,16 @@
 {% block titulo %}Ferretería Maxi | Resultados de la búsqueda{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="text-center my-4">Productos que coinciden con «{{ keyword }}»</h1>
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <h1 class="titulo-pagina">Productos</h1>
+    <p class="mt-1 text-stone-500">{{ page_obj.paginator.count }} resultado(s) para «{{ keyword }}»</p>
+  </div>
+  <form action="{% url 'search' %}" method="get" class="flex gap-2">
+    <input type="search" name="keyword" value="{{ keyword }}" class="input" aria-label="Buscar productos" required>
+    <button class="btn btn-oscuro" type="submit">Buscar</button>
+  </form>
+</div>
 {% include 'Administrador/_tablaProductos.html' with productos=articulos acciones=True %}
 {% include 'includes/paginacion.html' %}
 

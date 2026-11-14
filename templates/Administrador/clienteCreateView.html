@@ -1,15 +1,15 @@
 {% extends 'Administrador/AdministradorBase.html' %}
-{% block titulo %}Ferretería Maxi | Crear cliente{% endblock titulo %}
+{% block titulo %}Ferretería Maxi | Nuevo cliente{% endblock titulo %}
 {% block contenido %}
 
-<h1 class="AdministradorCreateTitle">Crear cliente</h1>
-<div class="row justify-content-center">
-  <form method="post" class="col-md-6">
+<div class="mx-auto max-w-2xl">
+  <h1 class="titulo-pagina">Nuevo cliente</h1>
+  <form method="post" class="tarjeta mt-6 p-6 sm:p-8">
     {% csrf_token %}
-    {{ form.as_div }}
-    <div class="text-center">
-      <button type="submit" class="btn btn-primary m-4">Añadir</button>
-      <a href="{% url 'abm' %}" class="btn btn-danger m-4">Cancelar</a>
+    {% include 'includes/formulario.html' with form=form %}
+    <div class="mt-8 flex justify-end gap-3 border-t border-stone-100 pt-6">
+      <a href="{% url 'abm' %}" class="btn btn-secundario">Cancelar</a>
+      <button type="submit" class="btn btn-oscuro">Crear cliente</button>
     </div>
   </form>
 </div>
